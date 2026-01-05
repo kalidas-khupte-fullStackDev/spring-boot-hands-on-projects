@@ -1,7 +1,9 @@
 package com.bank.app.controller;
 
 import com.bank.app.model.Customer;
+import com.bank.app.model.response.ApiResponse;
 import com.bank.app.service.CustomerService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/customers/")
@@ -19,12 +22,16 @@ public class CustomerController {
     private CustomerService customerService;
 
     @PostMapping("add")
-    public ResponseEntity<String> createCustomer(@RequestBody Customer customer) {
+    public ResponseEntity<ApiResponse<Customer>> createCustomer(@RequestBody Customer customer) {
         try {
-            String message = customerService.createCustomer(customer);
-            return new ResponseEntity<>(message,HttpStatusCode.valueOf(HttpStatus.CREATED.value()));
-        } catch (ResponseStatusException e) {
-            return new ResponseEntity<>(e.getReason(), e.getStatusCode());
+            Customer newlyAddedCustomer = customerService.createCustomer(customer);
+            String message = "New Customer with a Name: [" + String.join(" " ,newlyAddedCustomer.getFirstName(), newlyAddedCustomer.getLastName()) + "] added Successfully";
+            ApiResponse<Customer> apiResponse = new ApiResponse<>(message, newlyAddedCustomer);
+            return new ResponseEntity<>(apiResponse,HttpStatusCode.valueOf(HttpStatus.CREATED.value()));
+        } catch (Exception e) {
+            String errMessage = "Error creating New Customer with a Name: [" + String.join(" " ,customer.getFirstName(), customer.getLastName()) + "], Reason: " + e.getMessage();
+            ApiResponse<Customer> apiErrResponse = new ApiResponse<>(errMessage, customer);
+            return new ResponseEntity<>(apiErrResponse, HttpStatusCode.valueOf(HttpStatus.BAD_REQUEST.value()));
         }
     }
 
@@ -43,22 +50,16 @@ public class CustomerController {
     }
 
     @GetMapping("view/{customerId}")
-    public ResponseEntity<Object> getCustomerById(@PathVariable Long customerId) {
-        try {
-            Customer customerById = customerService.getCustomerById(customerId);
-            return new ResponseEntity<>(customerById,HttpStatusCode.valueOf(HttpStatus.OK.value()));
-        } catch (ResponseStatusException e) {
-            return new ResponseEntity<>(e.getReason(), e.getStatusCode());
-        }
+    public ResponseEntity<Customer> getCustomerById(@PathVariable Long customerId) {
+            return customerService.getCustomerById(customerId).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("update/{customerId}")
-    public ResponseEntity<Object> updateCustomer(@PathVariable Long customerId, @RequestBody Customer customer)  {
+    public ResponseEntity<Customer> updateCustomerById(@PathVariable Long customerId, @RequestBody Customer customer)  {
         try {
-            String updateMessage = customerService.updateCustomer(customerId, customer);
-            return new ResponseEntity<>(updateMessage,HttpStatusCode.valueOf(HttpStatus.OK.value()));
-        } catch (ResponseStatusException e) {
-            return new ResponseEntity<>(e.getReason(), e.getStatusCode());
+            return ResponseEntity.ok(customerService.updateCustomerById(customerId, customer));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -73,9 +74,9 @@ public class CustomerController {
     }
 
     @DeleteMapping("delete/{customerId}")
-    public ResponseEntity<Object> deleteCustomer(@PathVariable Long customerId)  {
+    public ResponseEntity<Object> deleteCustomerById(@PathVariable Long customerId)  {
         try {
-            String deleteMessage = customerService.deleteCustomer(customerId);
+            String deleteMessage = customerService.deleteCustomerById(customerId);
             return new ResponseEntity<>(deleteMessage,HttpStatusCode.valueOf(HttpStatus.OK.value()));
         } catch (ResponseStatusException e) {
             return new ResponseEntity<>(e.getReason(), e.getStatusCode());

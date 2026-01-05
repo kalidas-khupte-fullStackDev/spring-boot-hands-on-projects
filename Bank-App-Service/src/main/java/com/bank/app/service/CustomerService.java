@@ -3,12 +3,13 @@ package com.bank.app.service;
 import com.bank.app.model.Customer;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CustomerService {
-    String createCustomer(Customer customer);
+    Customer createCustomer(Customer customer);
     List<Customer> getAllCustomers();
-    Customer getCustomerById(Long customerId);
-    String updateCustomer(Long customerId, Customer customer);
-    String deleteCustomer(Long customerId);
+    Optional<Customer> getCustomerById(Long customerId);
+    Customer updateCustomerById(Long customerId, Customer customer);
+    String deleteCustomerById(Long customerId);
     String deleteAllCustomer();
 }

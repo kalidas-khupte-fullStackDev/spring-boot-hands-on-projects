@@ -19,13 +19,8 @@ public class CategoryController {
     CategoryService categoryService;
 
     @GetMapping("categories/view")
-    public ResponseEntity<Object> getCategories(){
-        try {
-            List<Category> fetchedCategories = categoryService.getCategories();
-            return new ResponseEntity<>(fetchedCategories, HttpStatusCode.valueOf(HttpStatus.OK.value()));
-        } catch (ResponseStatusException e) {
-            return new ResponseEntity<>(e.getReason(), e.getStatusCode());
-        }
+    public ResponseEntity<Object> getCategories() {
+        List<Category> fetchedCategories = categoryService.getCategories();
+        return new ResponseEntity<>(fetchedCategories, HttpStatusCode.valueOf(HttpStatus.OK.value()));
     }
-
 }

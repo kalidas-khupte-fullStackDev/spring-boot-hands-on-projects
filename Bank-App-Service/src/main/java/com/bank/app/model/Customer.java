@@ -4,6 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Entity(name = "Customers")
@@ -16,12 +19,16 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
+    @NotEmpty(message = "First Name can't be Empty")
     private String firstName;
-    @NonNull
+
+    @NotEmpty(message = "Last Name can't be Empty")
     private String lastName;
-    @NonNull
+
+    @NotEmpty(message = "Email can't be Empty")
+    @Email
     private String email;
-    @NonNull
+
+    @Size(max = 12)
     private String phoneNumber;
 }

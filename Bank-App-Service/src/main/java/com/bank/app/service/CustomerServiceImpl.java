@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,12 +17,15 @@ import java.util.Optional;
 public class CustomerServiceImpl implements  CustomerService{
 
     @Autowired
-    private CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
+
+    public CustomerServiceImpl(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
 
     @Override
-    public String createCustomer(Customer customer) {
-        customerRepository.save(customer);
-        return "New Customer added Successfully";
+    public Customer createCustomer(Customer customer) throws RuntimeException{
+        return customerRepository.save(customer);
     }
 
     @Override
@@ -30,25 +34,33 @@ public class CustomerServiceImpl implements  CustomerService{
     }
 
     @Override
-    public Customer getCustomerById(Long customerId) {
-         return customerRepository.findById(customerId).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found in DB with an Id:" + customerId.toString() ));
+    public Optional<Customer> getCustomerById(Long customerId) {
+         return customerRepository.findById(customerId);
     }
 
     @Override
-    public String updateCustomer(Long customerId, Customer newCustomerPayLoad) {
-         Optional<Customer> op_CustToUpdate = customerRepository.findById(customerId);
-         Customer customerToUpdate = op_CustToUpdate.orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found in DB with an Id:" + customerId.toString() ));
-        BeanUtils.copyProperties(newCustomerPayLoad, customerToUpdate, "id");
-        customerRepository.save(customerToUpdate);
-        return customerId + " Details has been Updated Successfully";
+    public Customer updateCustomerById(Long customerId, Customer newCustomerPayLoad) {
+        return customerRepository.findById(customerId).map(existingCustomer -> {
+            existingCustomer.setFirstName(newCustomerPayLoad.getFirstName());
+            existingCustomer.setLastName(newCustomerPayLoad.getLastName());
+            existingCustomer.setEmail(newCustomerPayLoad.getEmail());
+            existingCustomer.setPhoneNumber(newCustomerPayLoad.getPhoneNumber());
+            return customerRepository.save(existingCustomer);
+        }).orElseThrow(()-> new RuntimeException("Customer not found in DB with an Id:" + customerId));
     }
 
     @Override
-    public String deleteCustomer(Long customerId) {
+    public String deleteCustomerById(Long customerId) {
+        if(customerRepository.existsById(customerId)){
+            throw new RuntimeException("Customer not found in DB with an Id:" + customerId );
+        }
+        customerRepository.deleteById(customerId);
         Optional<Customer> op_CustToDelete = customerRepository.findById(customerId);
-        Customer customerToDelete = op_CustToDelete.orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found in DB with an Id:" + customerId.toString() ));
-        customerRepository.delete(customerToDelete);
-        return "Customer: " + String.join(" ", customerToDelete.getFirstName(), customerToDelete.getLastName()) + " Deleted Successfully";
+        if(op_CustToDelete.isPresent()){
+            Customer customerToDelete = op_CustToDelete.get();
+            return "Customer: " + String.join(" ", customerToDelete.getFirstName(), customerToDelete.getLastName()) + " Deleted Successfully";
+        }
+        return "";
     }
 
     @Override
