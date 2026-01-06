@@ -8,6 +8,10 @@ import com.ecommerce.project.model.Category;
 import com.ecommerce.project.repository.CategoryRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,8 +27,12 @@ public class CategoryServiceImpl implements CategoryService {
     private ModelMapper modelMapper;
 
     @Override
-    public CategoryResponse getCategories() {
-        List<Category> categories = categoryRepository.findAll();
+    public CategoryResponse getCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+        Sort sortDetailsObj = sortOrder.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(pageNumber,pageSize,sortDetailsObj);
+
+        Page<Category> categoryPage = categoryRepository.findAll(pageable);
+        List<Category> categories = categoryPage.toList();
         if(categories.isEmpty()){
             throw new APIException("No categories present till now");
         }
@@ -32,6 +40,11 @@ public class CategoryServiceImpl implements CategoryService {
         List<CategoryDTO> categoryDTOList = categories.stream().map(categoryObj -> modelMapper.map(categoryObj, CategoryDTO.class)).toList();
         CategoryResponse categoryResponse = new CategoryResponse();
         categoryResponse.setContent(categoryDTOList);
+        categoryResponse.setPageNumber(pageable.getPageNumber());
+        categoryResponse.setPageSize(pageable.getPageSize());
+        categoryResponse.setTotalPages(categoryPage.getTotalPages());
+        categoryResponse.setTotalElements(categoryPage.getTotalElements());
+        categoryResponse.setIsLastPage(categoryPage.isLast());
 
         return categoryResponse;
     }

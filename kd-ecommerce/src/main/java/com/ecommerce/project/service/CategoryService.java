@@ -5,7 +5,7 @@ import com.ecommerce.project.dtos.CategoryDTO;
 
 public interface CategoryService {
 
-    CategoryResponse getCategories();
+    CategoryResponse getCategories(Integer pageNumber, Integer pageSize, String  sortBy, String sortOrder);
 
     CategoryDTO createCategory(CategoryDTO categoryDTO);
 
