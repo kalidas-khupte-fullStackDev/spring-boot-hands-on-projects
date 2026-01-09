@@ -23,10 +23,10 @@ public class PlatformUser {
     @OneToOne(mappedBy = "platformUser", cascade = CascadeType.PERSIST)
     private PlatformProfile platformProfile;
 
-    @OneToMany(mappedBy = "postPlatformUser")
+    @OneToMany(mappedBy = "postPlatformUser", fetch = FetchType.LAZY)
     private List<Post> postList = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_group",
             joinColumns = @JoinColumn(name = "user_id"),

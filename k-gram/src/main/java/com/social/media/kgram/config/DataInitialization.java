@@ -112,6 +112,9 @@ public class DataInitialization {
             postRepository.save(post2);
             postRepository.save(post3);
 
+            System.out.println("Fetching User JPA");
+            userRepository.findById(1L);
+
 
         };
     }

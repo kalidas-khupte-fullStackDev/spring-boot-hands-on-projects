@@ -10,4 +10,9 @@ spring:
     console:
       enabled: true         # enables the H2 web console
       path: /h2-console     # console will be available at http://localhost:8080/h2-console
+  jpa:
+    show-sql: true
+    properties.hibernate:
+      format-sql: true
+
 
