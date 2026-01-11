@@ -1,4 +1,4 @@
-package com.ecommerce.project.controller;
+package com.ecommerce.project.controller.general;
 
 import com.ecommerce.project.api.response.model.CategoryResponse;
 import com.ecommerce.project.config.AppConstant;
