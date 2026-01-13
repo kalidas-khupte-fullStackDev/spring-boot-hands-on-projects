@@ -20,7 +20,8 @@ public class PlatformUser {
     private String name;
     private String userName;
 
-    @OneToOne(mappedBy = "platformUser", cascade = CascadeType.PERSIST)
+    @OneToOne(mappedBy = "platformUser", cascade = {CascadeType.REMOVE , CascadeType.PERSIST, CascadeType.MERGE})
+//    @OneToOne(mappedBy = "platformUser", cascade = {CascadeType.PERSIST})
     private PlatformProfile platformProfile;
 
     @OneToMany(mappedBy = "postPlatformUser", fetch = FetchType.LAZY)
@@ -39,12 +40,20 @@ public class PlatformUser {
         return Objects.hash(id);
     }
 
-    public void setPlatformProfile(PlatformProfile platformProfile) {
-        if (platformProfile != this.platformProfile) {
-            this.platformProfile = platformProfile;
-            if (!Objects.equals(platformProfile.getPlatformUser(), this)) {
-                platformProfile.setPlatformUser(this);
-            }
+//    public void setPlatformProfile(PlatformProfile platformProfile) {
+//        if (platformProfile != this.platformProfile) {
+//            this.platformProfile = platformProfile;
+//            if (platformProfile.getPlatformUser() != this) {
+//                platformProfile.setPlatformUser(this);
+//            }
+//        }
+//    }
+
+
+    public void setPlatformProfile(PlatformProfile profile) {
+        this.platformProfile = profile;
+        if (profile != null && profile.getPlatformUser() != this) {
+            profile.setPlatformUser(this);
         }
     }
 }

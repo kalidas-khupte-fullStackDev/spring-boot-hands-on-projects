@@ -28,4 +28,9 @@ public class UserController {
         PlatformUser newUser = userService.addNewUser(platformUser);
         return new ResponseEntity<>(newUser, HttpStatusCode.valueOf(HttpStatus.CREATED.value()));
     }
+
+    @DeleteMapping(value = "delete/{userId}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long userId){
+        return new ResponseEntity<>(userService.deleteUser(userId), HttpStatusCode.valueOf(HttpStatus.OK.value()));
+    }
 }

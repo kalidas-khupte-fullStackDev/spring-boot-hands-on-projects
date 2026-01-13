@@ -20,12 +20,14 @@ public class UserService {
 
     public PlatformUser addNewUser(PlatformUser platformUser) {
         if (platformUser.getPlatformProfile() != null) {
-                platformUser.setPlatformProfile(platformUser.getPlatformProfile());
-//            if (platformUser.getPlatformProfile().getPlatformUser() == null) {
-//                platformUser.getPlatformProfile().setPlatformUser(platformUser);
-//            }
+            platformUser.setPlatformProfile(platformUser.getPlatformProfile());
         }
         return userRepository.save(platformUser);
     }
 
+    public String deleteUser(Long userId) {
+        PlatformUser platformUser = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found with userId: " + userId));
+        userRepository.delete(platformUser);
+        return "User Deleted Successfully";
+    }
 }

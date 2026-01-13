@@ -1,6 +1,7 @@
 package com.social.media.kgram.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference ;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +24,7 @@ public class PlatformGroup {
     private String groupName;
 
     @ManyToMany(mappedBy = "groups")
-    @JsonIgnore
+    @JsonBackReference
     private Set<PlatformUser> users = new HashSet<>();
 
     @Override
