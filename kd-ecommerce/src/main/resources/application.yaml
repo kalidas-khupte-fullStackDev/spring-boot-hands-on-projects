@@ -15,3 +15,5 @@ spring:
     ddl-auto: update # Automatically creates/updates table schema based on entities
     show-sql: true # Log SQL queries to the console
 
+project:
+  image: uploads/

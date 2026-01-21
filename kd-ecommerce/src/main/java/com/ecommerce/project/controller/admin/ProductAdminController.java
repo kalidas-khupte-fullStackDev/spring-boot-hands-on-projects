@@ -1,7 +1,6 @@
 package com.ecommerce.project.controller.admin;
 
 import com.ecommerce.project.dtos.ProductDTO;
-import com.ecommerce.project.model.Product;
 import com.ecommerce.project.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +8,8 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 //http://localhost:8080/api/admin/products/category/1/add
 @RestController
@@ -29,8 +30,12 @@ public class ProductAdminController {
     }
 
     @PutMapping("update/image/{productId}")
-    public ResponseEntity<ProductDTO> updateProductImage(@PathVariable Long productId, @RequestParam("image") MultipartFile image) {
-        return new ResponseEntity<>(productService.updateProductImage(productId, image), HttpStatusCode.valueOf(HttpStatus.OK.value()));
+    public ResponseEntity<Object> updateProductImage(@PathVariable Long productId, @RequestParam("image") MultipartFile image) {
+        try {
+            return new ResponseEntity<>(productService.updateProductImage(productId, image), HttpStatusCode.valueOf(HttpStatus.OK.value()));
+        } catch (IOException e) {
+            return new ResponseEntity<>("Failed to upload file: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @DeleteMapping("delete/{productId}")
