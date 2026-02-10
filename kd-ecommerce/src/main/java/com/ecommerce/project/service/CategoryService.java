@@ -12,4 +12,15 @@ public interface CategoryService {
     CategoryDTO updateCategory(Long categoryId, CategoryDTO categoryDto);
 
     CategoryDTO deleteCategory(Long categoryId);
+
+//    private static CategoryResponse getCategoriesPrvt() {
+//        return null;
+//    }
+//
+//    static void logWarning(String msg) {
+//        CategoryResponse formatted = CategoryService.getCategoriesPrvt(); // Calling private method
+//        System.out.println("WARN: " + formatted);
+//    }
+
+
 }

@@ -57,7 +57,11 @@ public class User {
     @Setter
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "user_address", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "address_id")})
-    List<Address> address = new ArrayList<>();
+    private List<Address> address = new ArrayList<>();
+
+    @ToString.Exclude
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
+    private Cart cart;
 
     public User(String userName, String email, String password) {
         this.username = userName;

@@ -9,7 +9,8 @@ import lombok.ToString;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(name = "cart_items")
+@Entity
+@Table(name = "cart_items")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,9 +28,9 @@ public class CartItem {
     @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "product_id")
-    private Product products;
+    private Product product;
 
     private Double discount;
     private Double productPrice;
-    private Double quantity;
+    private Integer quantity;
 }
