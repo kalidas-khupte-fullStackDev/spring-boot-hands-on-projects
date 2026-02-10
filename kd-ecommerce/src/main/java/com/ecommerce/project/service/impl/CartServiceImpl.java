@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 @Service
@@ -58,7 +59,7 @@ public class CartServiceImpl implements CartService {
         //Get or Create Cart Item For provided Product Id & Cart Id only not for all globally cart Items
         CartItem cartItem = cartItemsRepository.findCartItemByCartIdAndProductId(cart.getCartId(), productId);
 
-        if(cartItem != null){
+        if (cartItem != null) {
             throw new APIException(productToAdd.getProductName() + " is already present in this cart");
         }
 
@@ -82,14 +83,15 @@ public class CartServiceImpl implements CartService {
         newCartItem = cartItemsRepository.save(newCartItem);
 
         // Updated the product stock in future code placeholder
+        // productToAdd.setQuantity(productToAdd.getQuantity() - quantity);
 
         // Return updated cart
         cart.setTotalPrice(cart.getTotalPrice() + (newCartItem.getProductPrice() * quantity));
-      //  logger.info(" cart.getCartItems() : {}", cart.getCartItems());
 
-        if(cart.getCartItems() != null){
+        if (cart.getCartItems() != null) {
             cart.getCartItems().add(newCartItem);
         }
+
         cartRepository.save(cart);
 
         //
@@ -103,6 +105,43 @@ public class CartServiceImpl implements CartService {
         CartDTO cartDTO = modelMapper.map(cart, CartDTO.class);
         cartDTO.setProducts(productDTOStream.toList());
         return cartDTO;
+    }
+
+    @Override
+    public CartDTO getCurrentUserCart(String email, Long cartId) {
+        Cart cart = cartRepository.findCartByEmailIdAndCartId(cartId, email).orElseThrow(() -> new ResourceNotFoundException(cartId, "cartId", "Carts"));
+        List<ProductDTO> productDTOList = cart.getCartItems().stream().map(cartItem -> {
+            ProductDTO productDTO = modelMapper.map(cartItem.getProduct(), ProductDTO.class);
+            logger.info("Product DTO Before quantity set {}", productDTO);
+            productDTO.setQuantity(cartItem.getQuantity());
+            logger.info("Product DTO After quantity set {}", productDTO);
+            return productDTO;
+        }).toList();
+        CartDTO userCart = modelMapper.map(cart, CartDTO.class);
+        userCart.setProducts(productDTOList);
+        return userCart;
+    }
+
+    @Override
+    public List<CartDTO> getAllCarts() {
+        List<Cart> allCarts = cartRepository.findAll().stream().toList();
+
+        if (allCarts.isEmpty()) {
+            throw new APIException("No carts present");
+        }
+
+        return allCarts.stream().map(cart -> {
+            List<ProductDTO> productDTOList = cart.getCartItems().stream().map(cartItem -> {
+                ProductDTO productDTO = modelMapper.map(cartItem.getProduct(), ProductDTO.class);
+                logger.info("getAllCarts : Product DTO Before quantity set {}", productDTO);
+                productDTO.setQuantity(cartItem.getQuantity());
+                logger.info("getAllCarts : Product DTO After quantity set {}", productDTO);
+                return productDTO;
+            }).toList();
+            CartDTO cartDTO = modelMapper.map(cart, CartDTO.class);
+            cartDTO.setProducts(productDTOList);
+            return cartDTO;
+        }).toList();
     }
 
     public Cart createNewOrGetExistingCart() {

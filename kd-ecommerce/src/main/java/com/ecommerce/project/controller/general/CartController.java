@@ -1,27 +1,53 @@
 package com.ecommerce.project.controller.general;
 
 import com.ecommerce.project.dtos.CartDTO;
+import com.ecommerce.project.exceptions.custom.ResourceNotFoundException;
+import com.ecommerce.project.model.Cart;
+import com.ecommerce.project.model.User;
+import com.ecommerce.project.repository.CartRepository;
 import com.ecommerce.project.service.CartService;
+import com.ecommerce.project.utils.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("api/public/carts/")
+@RequestMapping("api/cart/")
 public class CartController {
 
     @Autowired
+    private AuthUtils authUtils;
+
+    @Autowired
     private CartService cartService;
+
+    @Autowired
+    private CartRepository cartRepository;
 
     @PostMapping("add/products/{productId}/quantity/{quantity}")
     public ResponseEntity<CartDTO> addItemToCart(@PathVariable Long productId, @PathVariable Integer quantity){
         CartDTO updatedCart = cartService.addItemToCart(productId, quantity);
         return new ResponseEntity<CartDTO>(updatedCart, HttpStatusCode.valueOf(HttpStatus.CREATED.value()));
+
+    }
+
+    @GetMapping("all")
+    public ResponseEntity<List<CartDTO>> getAllCarts(){
+        List<CartDTO> allCarts = cartService.getAllCarts();
+        return new ResponseEntity<List<CartDTO>>(allCarts, HttpStatusCode.valueOf(HttpStatus.FOUND.value()));
+
+    }
+
+    @GetMapping("get/user")
+    public ResponseEntity<CartDTO> getUserCart(){
+        User user = authUtils.getCurrentLoggedInUserDetails();
+        Cart cart = cartRepository.findCartByEmailId(user.getEmail()).orElseThrow(() -> new ResourceNotFoundException("userEmailID", user.getEmail() , "Cart"));
+        CartDTO currentUserCart = cartService.getCurrentUserCart(user.getEmail(), cart.getCartId());
+        return new ResponseEntity<CartDTO>(currentUserCart, HttpStatusCode.valueOf(HttpStatus.OK.value()));
 
     }
 }
