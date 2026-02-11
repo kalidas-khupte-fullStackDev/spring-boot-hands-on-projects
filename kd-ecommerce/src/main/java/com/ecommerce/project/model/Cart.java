@@ -19,7 +19,7 @@ public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cartId;
+    private Long id;
 
     @OneToOne
     @JoinColumn(name = "user_id")
@@ -29,4 +29,15 @@ public class Cart {
     private List<CartItem> cartItems = new ArrayList<>();
 
     private Double totalPrice = 0.0;
+
+    public void addProduct(CartItem newItem) {
+        if (this.cartItems == null) {
+            this.cartItems = new ArrayList<>();
+        }
+        this.cartItems.add(newItem);
+        newItem.setCart(this); // Sync the reverse relationship
+
+        // You can even handle price calculation here to keep business logic in the domain!
+        this.totalPrice += (newItem.getProductPrice() * newItem.getQuantity());
+    }
 }

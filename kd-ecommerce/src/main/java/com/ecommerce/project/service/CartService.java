@@ -14,4 +14,8 @@ public interface CartService {
     CartDTO getCurrentUserCart(@NotEmpty @Size(max = 50) @Email String email, Long cartId);
 
     List<CartDTO> getAllCarts();
+
+    CartDTO updateProductQuantity(Long productId, Integer operationValue);
+
+    String deleteProductFromCart(Long cartId, Long productId);
 }

@@ -46,8 +46,22 @@ public class CartController {
     public ResponseEntity<CartDTO> getUserCart(){
         User user = authUtils.getCurrentLoggedInUserDetails();
         Cart cart = cartRepository.findCartByEmailId(user.getEmail()).orElseThrow(() -> new ResourceNotFoundException("userEmailID", user.getEmail() , "Cart"));
-        CartDTO currentUserCart = cartService.getCurrentUserCart(user.getEmail(), cart.getCartId());
+        CartDTO currentUserCart = cartService.getCurrentUserCart(user.getEmail(), cart.getId());
         return new ResponseEntity<CartDTO>(currentUserCart, HttpStatusCode.valueOf(HttpStatus.OK.value()));
-
     }
+
+    @PutMapping("update/products/{productId}/{operation}")
+    public ResponseEntity<CartDTO> updateProductQuantity(@PathVariable Long productId, @PathVariable String operation){
+        Integer operationValue = operation.equalsIgnoreCase("decrease") ? -1 : 1;
+        CartDTO updatedCartDTO = cartService.updateProductQuantity(productId ,operationValue);
+        return new ResponseEntity<CartDTO>(updatedCartDTO, HttpStatusCode.valueOf(HttpStatus.OK.value()));
+    }
+
+    @DeleteMapping("delete/{cartId}/products/{productId}")
+    public ResponseEntity<?> deleteProductFromCart(@PathVariable Long cartId, @PathVariable Long productId){
+       String status = cartService.deleteProductFromCart(cartId, productId);
+        return new ResponseEntity<>(status, HttpStatusCode.valueOf(HttpStatus.OK.value()));
+    }
+
+
 }

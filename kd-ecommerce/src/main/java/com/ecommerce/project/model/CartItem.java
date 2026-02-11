@@ -14,6 +14,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class CartItem {
 
     @Id
@@ -23,6 +24,7 @@ public class CartItem {
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "cart_id")
+    @ToString.Exclude
      private Cart cart;
 
     @ToString.Exclude
