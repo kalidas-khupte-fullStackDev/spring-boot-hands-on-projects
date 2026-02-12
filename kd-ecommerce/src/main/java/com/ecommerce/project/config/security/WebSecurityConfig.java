@@ -100,21 +100,21 @@ public class WebSecurityConfig {
     @Bean
     public CommandLineRunner initData(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            Role adminRole = roleRepository.findByRoleName(AppRole.ADMIN_ROLE).orElseGet(() -> {
+            Role adminRole = roleRepository.findByRoleName(AppRole.ROLE_ADMIN).orElseGet(() -> {
                 Role role = new Role();
-                role.setRoleName(AppRole.ADMIN_ROLE);
+                role.setRoleName(AppRole.ROLE_ADMIN);
                 return roleRepository.save(role);
             });
 
-            Role sellerRole = roleRepository.findByRoleName(AppRole.SELLER_ROLE).orElseGet(() -> {
+            Role sellerRole = roleRepository.findByRoleName(AppRole.ROLE_SELLER).orElseGet(() -> {
                 Role role = new Role();
-                role.setRoleName(AppRole.SELLER_ROLE);
+                role.setRoleName(AppRole.ROLE_SELLER);
                 return roleRepository.save(role);
             });
 
-            Role userRole = roleRepository.findByRoleName(AppRole.USER_ROLE).orElseGet(() -> {
+            Role userRole = roleRepository.findByRoleName(AppRole.ROLE_USER).orElseGet(() -> {
                 Role role = new Role();
-                role.setRoleName(AppRole.USER_ROLE);
+                role.setRoleName(AppRole.ROLE_USER);
                 return roleRepository.save(role);
             });
 
@@ -146,13 +146,13 @@ public class WebSecurityConfig {
                 return userRepository.save(adminUserIn);
             });
 
-            normaluser.setUserRole(userDefaultRoleSet);
+            normaluser.setRoles(userDefaultRoleSet);
             userRepository.save(normaluser);
 
-            sellerUserOut.setUserRole(userSellerRoleSet);
+            sellerUserOut.setRoles(userSellerRoleSet);
             userRepository.save(sellerUserOut);
 
-            adminUserOut.setUserRole(userAdminRoleSet);
+            adminUserOut.setRoles(userAdminRoleSet);
             userRepository.save(adminUserOut);
 
 

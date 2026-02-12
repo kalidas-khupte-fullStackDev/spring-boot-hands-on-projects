@@ -8,9 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
-@Table(name = "roles", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "role_name")
-})
+@Table(name = "roles")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -109,29 +109,29 @@ public class AuthController {
 
         if (signUpRequest.getRoles() == null) {
             // Role userRole = roleRepository.findByRoleNames(AppRole.USER_ROLE).orElseThrow(() -> new MessageResponse(""))
-            Role userRole = roleRepository.findByRoleName(AppRole.USER_ROLE).orElseThrow(() -> new RuntimeException("ERROR : Role is not present"));
+            Role userRole = roleRepository.findByRoleName(AppRole.ROLE_USER).orElseThrow(() -> new RuntimeException("ERROR : Role is not present"));
             jpaRoles.add(userRole);
         } else {
             signUpRequest.getRoles().forEach(s -> {
                 switch (s) {
                     case "admin" -> {
-                        Role adminRole = roleRepository.findByRoleName(AppRole.ADMIN_ROLE).orElseThrow(() -> new RuntimeException("ERROR : Role is not present"));
+                        Role adminRole = roleRepository.findByRoleName(AppRole.ROLE_ADMIN).orElseThrow(() -> new RuntimeException("ERROR : Role is not present"));
                         jpaRoles.add(adminRole);
                     }
 
                     case "seller" -> {
-                        Role sellerRole = roleRepository.findByRoleName(AppRole.SELLER_ROLE).orElseThrow(() -> new RuntimeException("ERROR : Role is not present"));
+                        Role sellerRole = roleRepository.findByRoleName(AppRole.ROLE_SELLER).orElseThrow(() -> new RuntimeException("ERROR : Role is not present"));
                         jpaRoles.add(sellerRole);
                     }
 
                     default -> {
-                        Role userRole = roleRepository.findByRoleName(AppRole.USER_ROLE).orElseThrow(() -> new RuntimeException("ERROR : Role is not present"));
+                        Role userRole = roleRepository.findByRoleName(AppRole.ROLE_USER).orElseThrow(() -> new RuntimeException("ERROR : Role is not present"));
                         jpaRoles.add(userRole);
                     }
                 }
             });
         }
-        user.setUserRole(jpaRoles);
+        user.setRoles(jpaRoles);
         userRepository.save(user);
         return new ResponseEntity<>(new MessageResponse("New User Registration is successful!!"), HttpStatusCode.valueOf(HttpStatus.CREATED.value()));
     }
