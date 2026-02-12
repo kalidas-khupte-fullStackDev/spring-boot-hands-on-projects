@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "roles", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "role_name")
+})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,6 +23,6 @@ public class Role {
 
     @ToString.Exclude
     @Enumerated(EnumType.STRING)
-   @Column(name = "role_name", length = 20)
+    @Column(name = "role_name", length = 20)
     private AppRole roleName;
 }
