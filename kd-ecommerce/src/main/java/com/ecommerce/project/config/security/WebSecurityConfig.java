@@ -73,6 +73,7 @@ public class WebSecurityConfig {
             httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(authEntryPointJwt);
         });
         http.authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                .requestMatchers("/actuator/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/v3/api-docs").permitAll()

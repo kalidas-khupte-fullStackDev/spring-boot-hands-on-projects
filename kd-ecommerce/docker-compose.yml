@@ -1,0 +1,51 @@
+#version: '3.8'
+services:
+  # 1. The Database Service
+  postgres-db:
+    image: postgres:16-alpine
+    container_name: kd-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Kalidas@123
+      POSTGRES_DB: kd-ecommerce-db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - kd-network
+
+  # 2. Redis for Hibernate L2 Cache
+  product-redis:
+    image: redis:7-alpine
+    container_name: product-redis
+    # Add this command to set a password on startup
+    command: redis-server --requirepass Kalidas@123
+    ports:
+      - "6379:6379"
+    restart: always
+
+  # 3. The Client Service (pgAdmin)
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: kd-pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@kd.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres-db
+    networks:
+      - kd-network
+
+# 3. The Bridge Network (Explicitly defined)
+networks:
+  kd-network:
+    driver: bridge
+
+# 4. Persistence (So you don't lose data when containers restart)
+volumes:
+  postgres_data:

@@ -1,0 +1,84 @@
+spring:
+  application:
+    name: product-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/kd-product-service-db
+    username: postgres
+    password: Kalidas@123
+    driver-class-name: org.postgresql.Driver
+
+  # Standard Spring Data Redis Configuration
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: Kalidas@123
+      timeout: 6000ms
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+    # Move ddl-auto here for standard Spring Boot handling
+    hibernate:
+      ddl-auto: update
+
+    properties:
+      hibernate:
+        format_sql: true
+
+        # --- FIXED SECTION BELOW ---
+        cache:
+          use_second_level_cache: true
+          use_query_cache: true
+
+          # 'region' and 'redisson' must be siblings of 'use_query_cache' (same indentation)
+          region:
+            factory_class: org.redisson.hibernate.RedissonRegionFactory
+
+          # Redisson specific config
+          redisson:
+#            config: file:./src/main/resources/redisson.yml
+            config: ./src/main/resources/redisson.yml
+#            config: classpath:redisson.yml
+            # --- DEFAULT CACHE SETTINGS ---
+            # Use 'fallback' to set the default for all entities
+            fallback:
+              expiration:
+                time_to_live: 3600000   # 1 hour
+                max_idle_time: 1800000  # 30 minutes
+
+# Custom Project Properties
+project:
+  image: uploads/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info,health,metrics,loggers,beans,shutdown
+        exclude: env
+  endpoint:
+    health:
+      show-details: always
+    shutdown:
+      enabled : true
+  info:
+    env:
+      enabled : true
+
+info:
+  app:
+    name : product-service
+    description: Product micro-service app
+    version : 0.1
+
+# Logging
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        cache: DEBUG
+        stat: DEBUG

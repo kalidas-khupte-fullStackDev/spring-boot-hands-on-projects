@@ -1,0 +1,10 @@
+singleServerConfig:
+  address: "redis://127.0.0.1:6379"
+  password: Kalidas@123
+  database: 0
+
+# Use the standard codec
+codec: !<org.redisson.codec.Kryo5Codec> {}
+
+threads: 16
+nettyThreads: 32
