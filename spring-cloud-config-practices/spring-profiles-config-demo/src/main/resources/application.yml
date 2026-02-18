@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: spring-config-demo
+  profiles:
+    active: dev
+
+#build:
+#  ID: 1
+#  version: 1.02
+#  name: Default-Build
