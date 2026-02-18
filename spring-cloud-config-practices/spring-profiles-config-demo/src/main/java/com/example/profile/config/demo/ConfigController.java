@@ -1,26 +1,27 @@
 package com.example.profile.config.demo;
 
-import com.example.profile.config.demo.common.config.AllCentralConfig;
-import com.example.profile.config.demo.common.config.AllCentralConfigSpring;
-import lombok.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/get/app/info")
-@Data
-@AllArgsConstructor
-@ToString
+@RestController
+@RequestMapping("/get/app/info")
+@RefreshScope
 public class ConfigController {
 
 //    Application properties getting set from @ConfigurationProperties
-//    private String buildId;
-//    private String buildVersion;
-//    private String buildName;
+    @Value("${build.id:default}")
+    private String buildId;
+    @Value("${build.version:default}")
+    private String buildVersion;
+    @Value("${build.name:default}")
+    private String buildName;
 
-    private AllCentralConfig allCentralConfig;
+    // private AllCentralConfig allCentralConfig;
 
-    private AllCentralConfigSpring allCentralConfigSpring;
+   // private AllCentralConfigSpring allCentralConfigSpring;
 
     // Environmental properties
 //    @Value("${OS:default}")
@@ -33,17 +34,18 @@ public class ConfigController {
 
     @GetMapping
     public String getBuildInfo(){
-//        controller.setBuildId(allCentralConfig.);
-//        controller.setBuildVersion(buildVersion);
-//        controller.setBuildName(buildName);
 
 //        controller.setOsName(osName);
 //        controller.setJHomePath(jHomePath);
 //        controller.setCurrentUserRootDirectory(currentUserRootDirectory);
 
-        String buildInfoStr = String.join(" ",  "Spring Active profile:", allCentralConfigSpring.getActive() , "Build Id:", allCentralConfig.getId().toString()
-                , "Version:", allCentralConfig.getVersion().toString(), "Name:", allCentralConfig.getName());
+//        String buildInfoStr = String.join(" ",  "Spring Active profile:", allCentralConfigSpring.getActive() , "Build Id:", allCentralConfig.getId().toString()
+//                , "Version:", allCentralConfig.getVersion().toString(), "Name:", allCentralConfig.getName());
 
-        return "Build & Env Info : " + buildInfoStr;
+        String buildInfoStr = String.join(" ","Build Id:", buildId
+              , "Version:", buildVersion, "Name:", buildName);
+
+        return "Build Info : " + buildInfoStr;
+        //return "Build & Env Info : " + buildInfoStr;
     }
 }

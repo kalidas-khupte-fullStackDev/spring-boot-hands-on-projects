@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "build")
 @Data
 public class AllCentralConfig {
-    private Integer id;
-    private Double version;
+    private String id;
+    private String version;
     private String name;
 }

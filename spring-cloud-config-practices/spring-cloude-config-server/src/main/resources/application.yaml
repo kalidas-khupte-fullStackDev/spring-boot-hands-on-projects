@@ -5,4 +5,7 @@ spring:
     config:
       server:
         git:
-          uri:
+          uri: https://github.com/kalidas-khupte-fullStackDev/central-config-server-ymls
+
+server:
+  port: 8888
