@@ -1,11 +1,27 @@
 spring:
   application:
     name: config-server-demo
+  profiles:
+    active: jdbc
   cloud:
     config:
       server:
-        git:
-          uri: https://github.com/kalidas-khupte-fullStackDev/central-config-server-ymls
+        jdbc:
+         sql: "SELECT prop_key, prop_value from properties where application=? and profile=? and label=?"
+        default-label: main
+  datasource:
+    url: jdbc:mysql://localhost:3306/configdb
+    username: root
+    password: MySecretPass@123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#    GIT Based Configuration
+#  cloud:
+#    config:
+#      server:
+#        git:
+#          uri: https://github.com/kalidas-khupte-fullStackDev/central-config-server-ymls
+#          username: ${GIT_USER}
+#          password: ${PAT}
 
 server:
   port: 8888

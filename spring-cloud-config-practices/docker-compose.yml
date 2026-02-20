@@ -1,0 +1,8 @@
+services:
+  my-sql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD : MySecretPass@123
+      MYSQL_DATABASE : configdb # This creates the schema automatically
+    ports:
+      - "3306:3306"

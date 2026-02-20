@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/get/app/info")
 @RefreshScope
 public class ConfigController {
 
@@ -32,7 +31,7 @@ public class ConfigController {
 //    @Value("${JAVA_HOME:default}")
 //    private String jHomePath;
 
-    @GetMapping
+    @GetMapping("/build-info")
     public String getBuildInfo(){
 
 //        controller.setOsName(osName);

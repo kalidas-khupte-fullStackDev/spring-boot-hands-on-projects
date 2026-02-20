@@ -1,7 +1,11 @@
 spring:
   application:
     name: configdemo
+  cloud:
+    config:
+      label: main  # This must match the 'label' column in your MySQL table
   config:
+#    import: optional:configserver:http://localhost:8888
     import: optional:configserver:http://localhost:8888
   profiles:
     active: prod
@@ -10,16 +14,14 @@ build:
   id: 1
   version: 1.02
   name: Default-Build-local-without-Git
+#build:
+#  id: ${ID}
+#  version: ${VERSION}
+#  name: ${NAME}
 
 management:
   endpoints:
     web:
       exposure:
         include: refresh,health
-#  endpoint:
-#    refresh:
-#      enabled: true
-#  endpoint:
-#    refresh:
-#      enabled: true
 
