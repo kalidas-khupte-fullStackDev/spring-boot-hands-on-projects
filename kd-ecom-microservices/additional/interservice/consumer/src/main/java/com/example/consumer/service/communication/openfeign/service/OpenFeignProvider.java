@@ -1,4 +1,4 @@
-package com.example.consumer.service.communication.openfeign.demo.service;
+package com.example.consumer.service.communication.openfeign.service;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
