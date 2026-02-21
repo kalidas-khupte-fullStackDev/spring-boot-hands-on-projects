@@ -14,12 +14,12 @@ public class HttpServiceClientController {
     private final HttpServiceClientProvider httpServiceClientProvider;
 
     @GetMapping("/http-interface/restclient")
-    String callApiResourceViaRestClient() {
+    String callApiViaHttpServiceRestClient() {
         return httpServiceClientProvider.getRestClientBasedProviderServiceInfo();
     }
 
     @GetMapping("/http-interface/web-client")
-    String callApiResourceViaWebClientClient() {
+    String callApiViaHttpServiceWebClientClient() {
         return httpServiceClientProvider.getWebClientBasedProviderServiceInfo();
     }
 }
