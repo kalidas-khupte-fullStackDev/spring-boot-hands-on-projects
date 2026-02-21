@@ -13,7 +13,7 @@ public class RestClientProviderService {
     public String getProviderServiceInfo() {
         System.out.println("Sent Packet reqeust from consumer service via REST Clients");
         String res = "Sent Packet reqeust from consumer service via REST Clients";
-        String providerRes = restClient.get().uri("/ping-service").retrieve().body(String.class);;
+        String providerRes = restClient.get().uri("/ping-service").retrieve().body(String.class);
         return String.join(" ", res , providerRes);
     }
 }
