@@ -1,5 +1,21 @@
 spring:
   application:
-    name: provider
+    name: provider-service
 server:
   port: 8081
+
+eureka:
+  instance:
+    prefer-ip-address: true
+#    hostname: localhost
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    serviceUrl:
+      defaultZone: "http://localhost:8761/eureka/"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

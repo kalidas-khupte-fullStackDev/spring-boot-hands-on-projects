@@ -13,6 +13,11 @@ public class HttpServiceClientController {
 
     private final HttpServiceClientProvider httpServiceClientProvider;
 
+    @GetMapping("/http-interface/rest-template")
+    String callApiViaHttpServiceRestTemplate() {
+        return httpServiceClientProvider.getRestTemplateBasedProviderServiceInfo();
+    }
+
     @GetMapping("/http-interface/restclient")
     String callApiViaHttpServiceRestClient() {
         return httpServiceClientProvider.getRestClientBasedProviderServiceInfo();

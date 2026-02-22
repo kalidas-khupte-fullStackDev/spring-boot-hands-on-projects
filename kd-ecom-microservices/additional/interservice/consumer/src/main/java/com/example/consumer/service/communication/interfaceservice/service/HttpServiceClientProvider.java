@@ -9,6 +9,13 @@ public class HttpServiceClientProvider {
 
     private final HttpServiceClientInterface httpServiceClientInterfaceService;
 
+    public String getRestTemplateBasedProviderServiceInfo() {
+        System.out.println("Sent Packet reqeust from consumer service via Http Service Client Interface wrapped with REST Templt");
+        String res = "Sent Packet reqeust from consumer service via Http Service Client Interface wrapped with REST Templt";
+        String providerRes = httpServiceClientInterfaceService.getInstanceInfo();
+        return String.join(" ", res , providerRes);
+    }
+
     public String getRestClientBasedProviderServiceInfo() {
         System.out.println("Sent Packet reqeust from consumer service via Http Service Client Interface wrapped with REST Client");
         String res = "Sent Packet reqeust from consumer service via Http Service Client Interface wrapped with REST Client";

@@ -14,7 +14,7 @@ public class WebFluxClientProviderService {
     public String getProviderServiceInfo() {
         System.out.println("Sent Packet reqeust from consumer service viaWeb Flux Client");
         String res = "Sent Packet reqeust from consumer service viaWeb Flux Client";
-        Mono<String> providerRes = webClient.get().uri("/ping-service").retrieve().bodyToMono(String.class);
+        Mono<String> providerRes = webClient.get().uri("/api/ping-service").retrieve().bodyToMono(String.class);
         return String.join(" ", res , providerRes.block());
     }
 }

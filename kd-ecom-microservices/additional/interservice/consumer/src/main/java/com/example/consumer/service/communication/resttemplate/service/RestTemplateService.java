@@ -14,7 +14,8 @@ public class RestTemplateService {
     @Value("${server.port}")
     private String serverPort;
     private final String serviceInstance = UUID.randomUUID().toString();
-    private static final String PROVIDER_SERVICE_URI = "http://localhost:8081/api";
+   // private static final String PROVIDER_SERVICE_URI = "http://localhost:8081/api";
+    private static final String PROVIDER_SERVICE_URI = "http://provider-service/api";
 
     private final RestTemplate restTemplate;
 

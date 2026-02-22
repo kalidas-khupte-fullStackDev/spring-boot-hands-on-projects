@@ -7,6 +7,6 @@ import org.springframework.web.service.annotation.HttpExchange;
 @HttpExchange()
 public interface HttpServiceClientInterface {
 
-    @GetExchange(url = "/ping-service")
+    @GetExchange(url = "/api/ping-service")
     String getInstanceInfo();
 }
