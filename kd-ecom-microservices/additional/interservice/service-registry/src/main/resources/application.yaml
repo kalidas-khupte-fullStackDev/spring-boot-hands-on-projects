@@ -11,5 +11,12 @@ eureka:
     fetch-registry: false
   instance:
     prefer-ip-address: true
-#    hostname: localhost
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,shutdown
+  endpoint:
+    shutdown:
+      access: unrestricted

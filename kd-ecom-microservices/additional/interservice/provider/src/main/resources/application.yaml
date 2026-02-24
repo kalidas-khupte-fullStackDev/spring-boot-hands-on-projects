@@ -7,7 +7,6 @@ server:
 eureka:
   instance:
     prefer-ip-address: true
-#    hostname: localhost
   client:
     fetch-registry: true
     register-with-eureka: true
@@ -18,4 +17,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info
+        include: health,info,shutdown
+  endpoint:
+    shutdown:
+      access: unrestricted

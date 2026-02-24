@@ -1,26 +1,53 @@
 spring:
   application:
     name: order-service
-  datasource:
-    url: jdbc:postgresql://localhost:5432/order
-    username: kalidas
-    password: kalidas@123
-  jpa:
-    database: POSTGRESQL
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+#  cloud:
+#    config:
+#      label: main  # This must match the 'label' column in your MySQL table
+  config:
+    import: optional:configserver:http://localhost:8888
+  profiles:
+    active: dev
 
-#  h2:
-#    console:
-#      enabled: true
+#management:
+#  endpoint:
+#    shutdown:
+#      access: unrestricted
+#  endpoints:
+#    web:
+#      exposure:
+#        include: health,info,shutdown
+
+#spring:
+#  application:
+#    name: order-service
 #  datasource:
-#    url: jdbc:h2:mem:test
+#    url: jdbc:postgresql://localhost:5432/order
+#    username: kalidas
+#    password: kalidas@123
 #  jpa:
+#    database: POSTGRESQL
 #    show-sql: true
 #    hibernate:
-#      ddl-auto: create
-
-server:
-  port: 8083
+#      ddl-auto: update
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
+#
+##  h2:
+##    console:
+##      enabled: true
+##  datasource:
+##    url: jdbc:h2:mem:test
+##  jpa:
+##    show-sql: true
+##    hibernate:
+##      ddl-auto: create
+#
+#server:
+#  port: 8083
+#
+#eureka:
+#  client:
+#    fetch-registry: true
+#    register-with-eureka: true
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka

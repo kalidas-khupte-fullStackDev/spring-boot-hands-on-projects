@@ -47,32 +47,32 @@ public class ProductService {
     }
 
     public Optional<ProductResponse> updateProduct(Long id, ProductRequest productRequest) {
-        return productRepository.findById(id)
-                .map(existingProduct -> {
-                    updateProductFromRequest(existingProduct, productRequest);
-                    Product savedProduct = productRepository.save(existingProduct);
-                    return mapToProductResponse(savedProduct);
-                });
+        return productRepository.findById(id).map(existingProduct -> {
+            updateProductFromRequest(existingProduct, productRequest);
+            Product savedProduct = productRepository.save(existingProduct);
+            return mapToProductResponse(savedProduct);
+        });
     }
 
     public List<ProductResponse> getAllProducts() {
-        return productRepository.findByActiveTrue().stream()
-                .map(this::mapToProductResponse)
-                .collect(Collectors.toList());
+        return productRepository.findByActiveTrue().stream().map(this::mapToProductResponse).collect(Collectors.toList());
     }
 
     public boolean deleteProduct(Long id) {
-        return productRepository.findById(id)
-                .map(product -> {
-                    product.setActive(false);
-                    productRepository.save(product);
-                    return true;
-                }).orElse(false);
+        return productRepository.findById(id).map(product -> {
+            product.setActive(false);
+            productRepository.save(product);
+            return true;
+        }).orElse(false);
     }
 
     public List<ProductResponse> searchProducts(String keyword) {
-        return productRepository.searchProducts(keyword).stream()
-                .map(this::mapToProductResponse)
-                .collect(Collectors.toList());
+        return productRepository.searchProducts(keyword).stream().map(this::mapToProductResponse).collect(Collectors.toList());
+    }
+
+    public Optional<ProductResponse> getProductById(Long id) {
+//        Long productId= Long.valueOf(id);
+//        return productRepository.findProductByIdAndActiveTrue(productId).map(this::mapToProductResponse);
+        return productRepository.findProductByIdAndActiveTrue(id).map(this::mapToProductResponse);
     }
 }
