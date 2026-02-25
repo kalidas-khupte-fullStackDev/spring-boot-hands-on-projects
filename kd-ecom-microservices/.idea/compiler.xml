@@ -3,21 +3,24 @@
   <component name="CompilerConfiguration">
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
-      <profile name="Annotation profile for user" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar" />
-        </processorPath>
-        <module name="user" />
-      </profile>
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="FirstSpring" />
+        <module name="eureka-service-registry" />
+        <module name="service-registry" />
+        <module name="config-server-demo" />
+      </profile>
+      <profile name="Annotation profile for provider" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
+        </processorPath>
+        <module name="provider" />
+        <module name="consumer" />
       </profile>
       <profile name="Annotation profile for ecom-application" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -27,6 +30,7 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar" />
         </processorPath>
         <module name="product" />
+        <module name="user" />
         <module name="ecom-application" />
         <module name="order" />
       </profile>
@@ -35,9 +39,14 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="FirstSpring" options="-parameters" />
+      <module name="config-server-demo" options="-parameters" />
+      <module name="consumer" options="-parameters" />
       <module name="ecom-application" options="-parameters" />
+      <module name="eureka-service-registry" options="-parameters" />
       <module name="order" options="-parameters" />
       <module name="product" options="-parameters" />
+      <module name="provider" options="-parameters" />
+      <module name="service-registry" options="-parameters" />
       <module name="user" options="-parameters" />
     </option>
   </component>

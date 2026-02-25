@@ -8,7 +8,12 @@
         <option value="$PROJECT_DIR$/order/pom.xml" />
         <option value="$PROJECT_DIR$/product/pom.xml" />
         <option value="$PROJECT_DIR$/additional/FirstSpring/pom.xml" />
+        <option value="$PROJECT_DIR$/additional/interservice/consumer/pom.xml" />
+        <option value="$PROJECT_DIR$/additional/interservice/provider/pom.xml" />
+        <option value="$PROJECT_DIR$/additional/interservice/service-registry/pom.xml" />
         <option value="$PROJECT_DIR$/additional/ecom-application/pom.xml" />
+        <option value="$PROJECT_DIR$/eureka-service-registry/pom.xml" />
+        <option value="$PROJECT_DIR$/spring-cloude-config-server/pom.xml" />
       </list>
     </option>
   </component>

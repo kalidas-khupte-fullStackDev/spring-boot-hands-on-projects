@@ -9,14 +9,14 @@ spring:
   profiles:
     active: dev
 
-#management:
-#  endpoint:
-#    shutdown:
-#      access: unrestricted
-#  endpoints:
-#    web:
-#      exposure:
-#        include: health,info,shutdown
+management:
+  endpoint:
+    shutdown:
+      access: unrestricted
+  endpoints:
+    web:
+      exposure:
+        include: health,info,shutdown
 
 #spring:
 #  application:

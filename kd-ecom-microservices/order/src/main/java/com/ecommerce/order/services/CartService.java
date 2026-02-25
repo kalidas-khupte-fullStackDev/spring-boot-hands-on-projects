@@ -25,20 +25,17 @@ public class CartService {
 
     public boolean addToCart(String userId, CartItemRequest request) {
 
-         // Look for product (Product validation)
+        // Look for product (Product validation)
         ProductResponse productDetails = productServiceClient.getProductDetails(request.getProductId());
 
-        if (productDetails == null || productDetails.getStockQuantity() < request.getQuantity())
-            return false;
+        if (productDetails == null || productDetails.getStockQuantity() < request.getQuantity()) return false;
 
-         // Look for User id (User validation)
+        // Look for User id (User validation Microservice approach)
         UserResponse userDetails = userServiceClient.getUserDetails(userId);
 
-        if(userDetails == null){
-            return false;
-        }
+        if (userDetails == null) return false;
 
-        // User validation
+        // User validation (Monolithic approach)
 //        Optional<User> userOpt = userRepository.findById(Long.valueOf(userId));
 //        if (userOpt.isEmpty())
 //            return false;
@@ -53,12 +50,12 @@ public class CartService {
             cartItemRepository.save(existingCartItem);
         } else {
             // Create new cart item
-           CartItem cartItem = new CartItem();
-           cartItem.setUserId(userId);
-           cartItem.setProductId(request.getProductId());
-           cartItem.setQuantity(request.getQuantity());
-           cartItem.setPrice(BigDecimal.valueOf(1000.00));
-           cartItemRepository.save(cartItem);
+            CartItem cartItem = new CartItem();
+            cartItem.setUserId(userId);
+            cartItem.setProductId(request.getProductId());
+            cartItem.setQuantity(request.getQuantity());
+            cartItem.setPrice(BigDecimal.valueOf(1000.00));
+            cartItemRepository.save(cartItem);
         }
         return true;
     }
@@ -66,7 +63,7 @@ public class CartService {
     public boolean deleteItemFromCart(String userId, String productId) {
         CartItem cartItem = cartItemRepository.findByUserIdAndProductId(userId, productId);
 
-        if (cartItem != null){
+        if (cartItem != null) {
             cartItemRepository.delete(cartItem);
             return true;
         }
