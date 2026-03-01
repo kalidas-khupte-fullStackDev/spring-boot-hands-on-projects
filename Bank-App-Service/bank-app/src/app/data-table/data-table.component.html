@@ -1,0 +1,8 @@
+<p>data-table works!</p>
+
+<div *ngIf="currentUser">
+  <p><strong>Username:</strong> {{ currentUser?.username }}</p>
+  <p><strong>Email:</strong> {{ currentUser?.email }}</p>
+  <p><strong>Bio:</strong> {{ currentUser?.bio }}</p>
+  <img *ngIf="currentUser?.image" [src]="currentUser?.image" alt="{{ currentUser?.username }}" />
+</div>

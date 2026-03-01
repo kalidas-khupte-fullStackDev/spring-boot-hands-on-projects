@@ -3,7 +3,7 @@ package com.bank.app.controller;
 import com.bank.app.model.Customer;
 import com.bank.app.model.response.ApiResponse;
 import com.bank.app.service.CustomerService;
-import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
+@RequiredArgsConstructor
 @RequestMapping("api/customers/")
 public class CustomerController {
 
-    @Autowired
-    private CustomerService customerService;
+    private final CustomerService customerService;
 
     @PostMapping("add")
     public ResponseEntity<ApiResponse<Customer>> createCustomer(@RequestBody Customer customer) {

@@ -1,0 +1,14 @@
+<p>promise-obser-demo works!</p>
+
+<p>{{subject | async}}</p>
+<p>{{myData | json}}</p>
+<div class="row container">
+    <button class="btn btn-primary" type="button" (click)="create()">Create</button>
+    <button class="btn btn-primary" type="button" (click)="execute()">Execute</button>
+    <button class="btn btn-primary" type="button" (click)="cancel()">Cancel</button>
+</div>
+
+<div class="row container">
+    <button class="btn btn-primary" type="button" (click)="emitData()">Emit</button>
+    <button class="btn btn-primary" type="button" (click)="subscribeData()">Subscribe</button>
+</div>

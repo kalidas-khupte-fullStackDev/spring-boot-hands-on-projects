@@ -9,9 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerServiceImpl implements  CustomerService{
@@ -30,16 +30,17 @@ public class CustomerServiceImpl implements  CustomerService{
 
     @Override
     public List<Customer> getAllCustomers() {
-         return customerRepository.findAll(Sort.by("id"));
+        return customerRepository.findAll(Sort.by("id"));
     }
 
     @Override
     public Optional<Customer> getCustomerById(Long customerId) {
-         return customerRepository.findById(customerId);
+        return customerRepository.findById(customerId);
     }
 
     @Override
     public Customer updateCustomerById(Long customerId, Customer newCustomerPayLoad) {
+
         return customerRepository.findById(customerId).map(existingCustomer -> {
             existingCustomer.setFirstName(newCustomerPayLoad.getFirstName());
             existingCustomer.setLastName(newCustomerPayLoad.getLastName());

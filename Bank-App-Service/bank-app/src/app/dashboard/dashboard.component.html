@@ -1,0 +1,18 @@
+<p>dashboard works!</p>
+
+<h3>Current User Information</h3>
+<div *ngIf="currentUser">
+  <p><strong>Username:</strong> {{ currentUser?.username }}</p>
+  <p><strong>Email:</strong> {{ currentUser?.email }}</p>
+  <p><strong>Bio:</strong> {{ currentUser?.bio }}</p>
+  <img *ngIf="currentUser?.image" [src]="currentUser?.image" alt="{{ currentUser?.username }}" />
+</div>
+        <!-- <p class="text-xs-center">
+          <a [routerLink]="['/table']">User table</a>
+          <a [routerLink]="['/graph']">User graph</a>
+        </p> -->
+
+        <app-data-table></app-data-table>
+
+        <app-data-graph></app-data-graph>
+

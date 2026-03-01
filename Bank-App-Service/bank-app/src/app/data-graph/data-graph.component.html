@@ -1,0 +1,10 @@
+<p>data-graph works!</p>
+
+<div *ngIf="currentUser">
+  <p><strong>Username:</strong> {{ currentUser?.username }}</p>
+  <p><strong>Email:</strong> {{ currentUser?.email }}</p>
+  <p><strong>Bio:</strong> {{ currentUser?.bio }}</p>
+  <img *ngIf="currentUser?.image" [src]="currentUser?.image" alt="{{ currentUser?.username }}" />
+</div>
+
+<button class="btn btn-primary" type="button" (click)="updateUser()">Update User</button>
