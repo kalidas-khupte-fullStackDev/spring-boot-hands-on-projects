@@ -1,8 +1,15 @@
 spring:
   application:
-    name: config-server-demo
-#  profiles:
-#    active: jdbc
+    name: config-server
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/config
+#          search-locations: file:///D:\Java-Study-work\DecProjects\Udemy-courses\spring-boot-hands-on-projects\kd-ecom-microservices\spring-cloude-config-server\src\main\resources\config
+#          search-locations: file:///D:/Java-Study-work/DecProjects/Udemy-courses/spring-boot-hands-on-projects/kd-ecom-microservices/spring-cloude-config-server/src/main/resources/config
 #  cloud:
 #    config:
 #      server:
@@ -14,14 +21,24 @@ spring:
 #    username: root
 #    password: MySecretPass@123
 #    driver-class-name: com.mysql.cj.jdbc.Driver
+
 #    GIT Based Configuration
-  cloud:
-    config:
-      server:
-        git:
-          uri: https://github.com/kalidas-khupte-fullStackDev/central-config-server-ymls
-          username: ${GIT_USER}
-          password: ${PAT}
+#  cloud:
+#    config:
+#      server:
+#        git:
+#          uri: https://github.com/kalidas-khupte-fullStackDev/central-config-server-ymls
+#          username: ${GIT_USER}
+#          password: ${PAT}
+
+management:
+  endpoint:
+    shutdown:
+      access: unrestricted
+  endpoints:
+    web:
+      exposure:
+        include: health,info,refresh,shutdown
 
 server:
   port: 8888

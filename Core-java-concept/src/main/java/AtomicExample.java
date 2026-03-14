@@ -34,5 +34,14 @@ public class AtomicExample {
         // Let's see the results!
         System.out.println("Normal int (usually wrong): " + normalCount);
         System.out.println("AtomicInteger (always 1000): " + atomicCount.get());
+
+        UserBuilderPattern user = new UserBuilderPattern.UserBuilder()
+                .setName("Alice")
+                .setAge(28)
+                .build();
+
+        System.out.println("UserBuilderPattern Ex "+ user);
+        System.out.println("UserBuilderPattern Ex "+ user.getName());
+
     }
 }

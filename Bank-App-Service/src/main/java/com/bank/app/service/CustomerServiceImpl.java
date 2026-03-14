@@ -1,5 +1,6 @@
 package com.bank.app.service;
 
+import com.bank.app.annotations.RequiresLiveDatabase;
 import com.bank.app.model.Customer;
 import com.bank.app.repository.CustomerRepository;
 import org.springframework.beans.BeanUtils;
@@ -14,6 +15,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
+@RequiresLiveDatabase
 public class CustomerServiceImpl implements  CustomerService{
 
     @Autowired

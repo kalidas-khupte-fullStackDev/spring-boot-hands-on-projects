@@ -1,1 +1,105 @@
 /kd-ecom-microservices/.idea/workspace.xml
+
+# =========================
+
+# Logs
+
+# =========================
+
+logs/
+*.log
+*.log.*
+*.out
+*.err
+
+# =========================
+
+# IntelliJ IDEA
+
+# =========================
+
+.idea/
+.idea
+*.iml
+*.iws
+*.ipr
+out/
+
+# =========================
+
+# Maven
+
+# =========================
+
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+
+# =========================
+
+# Gradle
+
+# =========================
+
+.gradle/
+build/
+
+# =========================
+
+# OS Files
+
+# =========================
+
+.DS_Store
+Thumbs.db
+
+# =========================
+
+# Environment files
+
+# =========================
+
+.env
+*.env
+
+# =========================
+
+# Temporary files
+
+# =========================
+
+*.tmp
+*.temp
+*.swp
+*~
+
+# =========================
+
+# Generated files
+
+# =========================
+
+*.class
+*.jar
+*.war
+*.ear
+
+#=========================
+#Compressed files
+#=========================
+
+*.gz
+*.zip
+*.tar
+*.tar.gz
+
+#=========================
+#Data files
+#=========================
+
+*.data

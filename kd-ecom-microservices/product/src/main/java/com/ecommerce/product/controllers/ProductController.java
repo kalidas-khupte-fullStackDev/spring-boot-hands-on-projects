@@ -4,12 +4,14 @@ import com.ecommerce.product.dtos.ProductRequest;
 import com.ecommerce.product.dtos.ProductResponse;
 import com.ecommerce.product.services.ProductService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/products")
@@ -19,12 +21,14 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductResponse> createProduct(@RequestBody ProductRequest productRequest) {
+        log.info("Hitting createProduct API");
         return new ResponseEntity<>(productService.createProduct(productRequest),
                 HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<List<ProductResponse>> getProducts() {
+        log.info("Hitting getProducts API");
         return ResponseEntity.ok(productService.getAllProducts());
     }
 

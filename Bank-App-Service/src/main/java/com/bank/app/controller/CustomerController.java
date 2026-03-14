@@ -1,10 +1,10 @@
 package com.bank.app.controller;
 
+import com.bank.app.legacy.LegacyApiService;
 import com.bank.app.model.Customer;
 import com.bank.app.model.response.ApiResponse;
 import com.bank.app.service.CustomerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +20,7 @@ import java.util.List;
 public class CustomerController {
 
     private final CustomerService customerService;
+//    private final LegacyApiService legacyApiService;
 
     @PostMapping("add")
     public ResponseEntity<ApiResponse<Customer>> createCustomer(@RequestBody Customer customer) {
@@ -39,6 +40,7 @@ public class CustomerController {
     public ResponseEntity<Object> getAllCustomers() {
         try {
             List<Customer> customers = customerService.getAllCustomers();
+//            String msg = legacyApiService.helloFromLegacyService();
             if(!customers.isEmpty()){
             return new ResponseEntity<>(customers,HttpStatusCode.valueOf(HttpStatus.OK.value()));
             }else {

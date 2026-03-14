@@ -3,15 +3,5 @@ spring:
     name: user-service
   config:
     import: optional:configserver:http://localhost:8888
-  profiles:
-    active: dev
-
-#Actuator Endpoints
-management:
-  endpoint:
-    shutdown:
-      access: unrestricted
-  endpoints:
-    web:
-      exposure:
-        include: health,info,shutdown
+#  profiles:
+#    active: dev
