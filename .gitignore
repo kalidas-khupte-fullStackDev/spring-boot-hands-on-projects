@@ -103,3 +103,5 @@ Thumbs.db
 #=========================
 
 *.data
+kd-ecom-microservices/.idea/compiler.xml
+*.log
