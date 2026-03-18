@@ -16,11 +16,24 @@ public class GatewayRoutesConfig {
 // patterns: /api/users/**
     @Bean
     public RouteLocator customRoutesLocator(RouteLocatorBuilder builder) {
-        return builder.routes().route("user-service", r -> r
+        return builder.routes()
+                .route("user-service", r -> r
                         // Capture everything after /users/ into a variable called 'segment'
                         .path("/users/{segment:.*}")
                         // Plop that captured segment onto the end of the new path
                         .filters(f -> f.setPath("/api/users/{segment}"))
+                        .uri("lb://user-service"))
+                .route("product-service", r -> r
+                        // Capture everything after /users/ into a variable called 'segment'
+                        .path("/products/{segment:.*}")
+                        // Plop that captured segment onto the end of the new path
+                        .filters(f -> f.setPath("/api/products/{segment}"))
+                        .uri("lb://product-service"))
+                .route("order-service", r -> r
+                        // Capture everything after /users/ into a variable called 'segment'
+                        .path("/orders/{segment:.*}", "/carts/{segment:.*}")
+                        // Plop that captured segment onto the end of the new path
+                        .filters(f -> f.setPath("/api/{segment}"))
                         .uri("lb://user-service"))
                 .build();
     }
