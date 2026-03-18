@@ -4,6 +4,12 @@ spring:
   profiles:
     active: native
   cloud:
+    inetutils:
+      ignored-interfaces:
+        - vEthernet.*
+        - WSL.*
+      default-hostname: localhost
+      default-ip-address: 127.0.0.1
     config:
       server:
         native:

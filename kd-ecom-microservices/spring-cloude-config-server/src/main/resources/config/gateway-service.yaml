@@ -1,0 +1,97 @@
+spring:
+  cloud:
+    inetutils:
+      ignored-interfaces:
+        - vEthernet.*
+        - WSL.*
+      default-hostname: localhost
+      default-ip-address: 127.0.0.1
+#    gateway:
+#      server:
+#        webflux:
+#          routes:
+#            - id: eureka-registry-service
+#              uri: http://localhost:8761
+#              predicates:
+#                - name: Path
+#                  args:
+#                    patterns: /eureka/main
+#              filters:
+#                - SetPath= /
+#
+#            - id: eureka-registry-service-static
+#              uri: http://localhost:8761
+#              predicates:
+#                - name: Path
+#                  args:
+#                    patterns:
+#                      - /eureka/**
+#                      - /eureka
+#                      - /lastn
+#                      - /js/**
+#                      - /css/**
+#                      - /fonts/**
+#                      - /images/**
+#              filters:
+#                - StripPrefix=1
+#
+#            - id: user-service
+#              uri: lb://USER-SERVICE
+#              predicates:
+#                - name: Path
+#                  args:
+#                    patterns: /api/users/**
+#
+#            - id: product-service
+#              uri: lb://PRODUCT-SERVICE
+#              predicates:
+#                - name: Path
+#                  args:
+#                    patterns: /api/products/**
+#
+#            - id: order-service-cart
+#              uri: lb://ORDER-SERVICE
+#              predicates:
+#                - name: Path
+#                  args:
+#                    patterns:
+#                      - /api/cart/**
+#
+#            - id: order-service-orders
+#              uri: lb://ORDER-SERVICE
+#              predicates:
+#                - name: Path
+#                  args:
+#                    patterns:
+#                      - /api/orders/**
+
+#Actuator Endpoints
+management:
+endpoints:
+  web:
+    exposure:
+      include: "*"
+tracing:
+  sampling:
+    probability: 1.0
+
+eureka:
+instance:
+  prefer-ip-address: true
+  ip-address: 127.0.0.1
+  hostname: localhost
+
+client:
+  serviceUrl:
+    defaultZone: http://localhost:8761/eureka/
+  register-with-eureka: true
+  fetch-registry: true
+
+logging:
+level:
+  root: info
+  org.springframework.cloud.gateway.route.RouteDefinitionLocator: INFO
+  org.springframework.cloud.gateway: TRACE
+
+server:
+port: 8080

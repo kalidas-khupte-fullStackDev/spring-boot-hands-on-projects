@@ -93,6 +93,14 @@ services:
     networks:
       - loki
 
+  zipkin:
+    image: openzipkin/zipkin
+    ports:
+      - 9411:9411
+    networks:
+      - loki
+    restart: unless-stopped
+
   grafana:
     image: grafana/grafana:latest
     environment:
