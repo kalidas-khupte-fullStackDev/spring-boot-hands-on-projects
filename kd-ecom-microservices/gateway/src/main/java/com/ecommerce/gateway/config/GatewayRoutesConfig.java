@@ -19,22 +19,49 @@ public class GatewayRoutesConfig {
         return builder.routes()
                 .route("user-service", r -> r
                         // Capture everything after /users/ into a variable called 'segment'
-                        .path("/users/{segment:.*}")
+                        .path("/users", "/users/**")
                         // Plop that captured segment onto the end of the new path
-                        .filters(f -> f.setPath("/api/users/{segment}"))
+                        .filters(f -> f.rewritePath("/users(?<segment>/?.*)", "/api/users${segment}"))
                         .uri("lb://user-service"))
                 .route("product-service", r -> r
                         // Capture everything after /users/ into a variable called 'segment'
-                        .path("/products/{segment:.*}")
+                        .path("/products", "/products/**")
                         // Plop that captured segment onto the end of the new path
-                        .filters(f -> f.setPath("/api/products/{segment}"))
+                        .filters(f -> f.rewritePath("/products(?<segment>/?.*)", "/api/products${segment}"))
                         .uri("lb://product-service"))
-                .route("order-service", r -> r
+//                .route("order-service", r -> r
+//                        // Capture 'orders' or 'carts' into {prefix}, and the rest into {segment}
+//                        .path("/orders", "/orders/**", "/cart", "/cart/**")
+//                        // Rebuild the path using both variables
+//                        .filters(f -> f.rewritePath("/(?<prefix>orders|cart)(?<segment>/?.*)",
+//                                "/api/${prefix}${segment}"))
+//                        .uri("lb://order-service"))
+                .route("order-service-carts", r -> r
+                        // Capture 'orders' or 'carts' into {prefix}, and the rest into {segment}
+                        .path("/cart", "/cart/**")
+                        // Rebuild the path using both variables
+                        .filters(f -> f.rewritePath("/cart(?<segment>/?.*)",
+                                "/api/cart${segment}"))
+                        .uri("lb://order-service"))
+                .route("order-service-main", r -> r
+                        // Capture 'orders' or 'carts' into {prefix}, and the rest into {segment}
+                        .path("/orders", "/orders/**")
+                        // Rebuild the path using both variables
+                        .filters(f -> f.rewritePath("/orders(?<segment>/?.*)",
+                                "/api/orders${segment}"))
+                        .uri("lb://order-service"))
+                .route("eureka-registry-service", r -> r
                         // Capture everything after /users/ into a variable called 'segment'
-                        .path("/orders/{segment:.*}", "/carts/{segment:.*}")
+                        .path("/eureka/main")
                         // Plop that captured segment onto the end of the new path
-                        .filters(f -> f.setPath("/api/{segment}"))
-                        .uri("lb://user-service"))
+                        .filters(f -> f.setPath("/"))
+                        .uri("http://localhost:8761"))
+                .route("eureka-registry-service-statice", r -> r
+                        // Capture everything after /users/ into a variable called 'segment'
+                        .path("/eureka/**")
+                        // Plop that captured segment onto the end of the new path
+//                        .filters(f -> f.setPath("/api/products/{segment}"))
+                        .uri("http://localhost:8761"))
                 .build();
     }
 }
