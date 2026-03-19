@@ -24,8 +24,12 @@ spring:
 #    virtual-host: ${RABBITMQ_VHOST:guest}
 #    connection-timeout: 30000
 
+
 server:
   port: 8083
+
+app:
+  message: "Order Service"
 
 #Actuator Endpoints
 management:
@@ -33,12 +37,35 @@ management:
     web:
       exposure:
         include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+    info:
+      show-details: ALWAYS
+  health:
+    circuitbreakers:
+      enabled: true
   tracing:
     sampling:
       probability: 1.0
 #  zipkin:
 #    tracing:
 #      endpoint: ${ZIPKIN_URL:http://zipkin:9411/api/v2/spans}
+
+
+# Circuit Breaker
+resilience4j:
+  circuitbreaker:
+    instances:
+      productService:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        waitDurationInOpenState: 10s
+        failureRateThreshold: 50
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        slidingWindowType: count_based
 
 eureka:
   instance:

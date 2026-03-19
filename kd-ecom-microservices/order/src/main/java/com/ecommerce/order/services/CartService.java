@@ -7,14 +7,17 @@ import com.ecommerce.order.dtos.CartItemRequest;
 import com.ecommerce.order.models.CartItem;
 import com.ecommerce.order.serviceclient.exchange.ProductServiceClient;
 import com.ecommerce.order.serviceclient.exchange.UserServiceClient;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 @Transactional
 public class CartService {
@@ -23,6 +26,7 @@ public class CartService {
     private final ProductServiceClient productServiceClient;
     private final UserServiceClient userServiceClient;
 
+    @CircuitBreaker(name = "productService" , fallbackMethod = "addToCartFallBack")
     public boolean addToCart(String userId, CartItemRequest request) {
 
         // Look for product (Product validation)
@@ -58,6 +62,12 @@ public class CartService {
             cartItemRepository.save(cartItem);
         }
         return true;
+    }
+
+    public boolean addToCartFallBack(String userId, CartItemRequest request, Exception exception){
+        System.out.println(exception.getMessage());
+        log.error("Product service down");
+        return false;
     }
 
     public boolean deleteItemFromCart(String userId, String productId) {

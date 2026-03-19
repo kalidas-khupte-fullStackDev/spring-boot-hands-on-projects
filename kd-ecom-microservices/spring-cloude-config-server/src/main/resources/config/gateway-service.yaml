@@ -40,30 +40,57 @@ spring:
 #              predicates:
 #                - name: Path
 #                  args:
-#                    patterns: /api/users/**
+##                    patterns: /api/users/**
+#                    patterns:
+#                      - /users
+#                      - /users/**
+#              filters:
+#                - name: RewritePath
+#                  args:
+#                    regexp: /users(?<segment>/.*)
+#                    replacement: /api/users${segment}
 #
 #            - id: product-service
 #              uri: lb://PRODUCT-SERVICE
 #              predicates:
 #                - name: Path
 #                  args:
-#                    patterns: /api/products/**
+#                    patterns:
+#                      - /products
+#                      - /products/**
+#              filters:
+#                - name: RewritePath
+#                  args:
+#                    regexp: /products(?<segment>/.*)
+#                    replacement: /api/products{segment}
 #
 #            - id: order-service-cart
 #              uri: lb://ORDER-SERVICE
+#              filters:
+#                - name: RewritePath
+#                  args:
+#                    regexp: /cart(?<segment>/.*)
+#                    replacement: /api/cart{segment}
 #              predicates:
 #                - name: Path
 #                  args:
 #                    patterns:
-#                      - /api/cart/**
+#                      - /cart
+#                      - /cart/**
 #
 #            - id: order-service-orders
 #              uri: lb://ORDER-SERVICE
+#              filters:
+#                - name: RewritePath
+#                  args:
+#                    regexp: /orders(?<segment>/.*)
+#                    replacement: /api/orders{segment}
 #              predicates:
 #                - name: Path
 #                  args:
 #                    patterns:
-#                      - /api/orders/**
+#                      - /orders
+#                      - /orders/**
 
 #Actuator Endpoints
 management:
