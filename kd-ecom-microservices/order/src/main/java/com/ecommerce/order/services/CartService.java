@@ -8,6 +8,7 @@ import com.ecommerce.order.models.CartItem;
 import com.ecommerce.order.serviceclient.exchange.ProductServiceClient;
 import com.ecommerce.order.serviceclient.exchange.UserServiceClient;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,10 +26,11 @@ public class CartService {
     private final CartItemRepository cartItemRepository;
     private final ProductServiceClient productServiceClient;
     private final UserServiceClient userServiceClient;
-
-    @CircuitBreaker(name = "productService" , fallbackMethod = "addToCartFallBack")
+    private int attemptCount = 0;
+//    @CircuitBreaker(name = "productService" , fallbackMethod = "addToCartFallBack")
+    @Retry(name = "retryBreaker" , fallbackMethod = "addToCartFallBack")
     public boolean addToCart(String userId, CartItemRequest request) {
-
+        System.out.println("ATTEMPTS Count:" + ++attemptCount);
         // Look for product (Product validation)
         ProductResponse productDetails = productServiceClient.getProductDetails(request.getProductId());
 
@@ -72,7 +74,6 @@ public class CartService {
 
     public boolean deleteItemFromCart(String userId, String productId) {
         CartItem cartItem = cartItemRepository.findByUserIdAndProductId(userId, productId);
-
         if (cartItem != null) {
             cartItemRepository.delete(cartItem);
             return true;

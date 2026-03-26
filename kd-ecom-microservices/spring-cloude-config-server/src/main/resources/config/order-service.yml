@@ -54,7 +54,19 @@ management:
 
 
 # Circuit Breaker
+
 resilience4j:
+  ratelimiter:
+    instances:
+      orderServiceRateLimiter:
+        timeout-duration: 0s
+        limit-refresh-period: 4s
+        limit-for-period: 2s
+  retry:
+    instances:
+      retryBreaker:
+        maxAttempts: 5
+        waitDuration: 1s
   circuitbreaker:
     instances:
       productService:

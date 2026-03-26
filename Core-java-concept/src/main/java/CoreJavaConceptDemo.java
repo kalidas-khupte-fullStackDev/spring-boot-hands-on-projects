@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 public class CoreJavaConceptDemo {
 
     public static void main(String[] args) {
-//        String input = "microservices";
-//        countAlphabet(input);
+        String input = "microservices";
+        countAlphabet(input);
         new CoreJavaConceptDemo().withdraw(1000);
     }
 

@@ -60,6 +60,13 @@ logging:
       max-file-size: 5MB
       max-history: 7
 
+resilience4j:
+  ratelimiter:
+    instances:
+      productServiceRateLimiter:
+        timeout-duration: 0s
+        limit-refresh-period: 4s
+        limit-for-period: 2
 
 # KEYCLOAK
 #keycloak:

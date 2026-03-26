@@ -9,7 +9,7 @@ public class ParallelStreamsDemo {
         numbers.parallelStream().map(n -> {
 //        numbers.stream().map(n -> {
             System.out.println(Thread.currentThread().getName());
-            return n * 2;
+            return n*1896;
         }).forEach(System.out::println);
 
         List<Integer> list = new ArrayList<>();
@@ -17,7 +17,7 @@ public class ParallelStreamsDemo {
 //        numbers.parallelStream()
         numbers.stream()
                 .forEach(list::add);   // ❌ Not safe
-        System.out.println("Paraller list add"+ list);
+        System.out.println("parallelStream list add"+ list);
     }
 
     public static void main(String[] args) {

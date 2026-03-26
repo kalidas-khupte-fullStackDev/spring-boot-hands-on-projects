@@ -8,7 +8,7 @@ import org.springframework.context.annotation.FilterType;
 @SpringBootApplication
 @ComponentScan(
 		basePackages = "com.bank.app",
-		excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX,
+		excludeFilters = @ComponentScan.Filter(type = FilterType.,
 				pattern = "com.bank.app.legacy.*"))
 public class KdBankServiceApplication {
 

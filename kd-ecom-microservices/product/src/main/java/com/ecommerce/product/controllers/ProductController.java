@@ -3,6 +3,7 @@ package com.ecommerce.product.controllers;
 import com.ecommerce.product.dtos.ProductRequest;
 import com.ecommerce.product.dtos.ProductResponse;
 import com.ecommerce.product.services.ProductService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,25 @@ public class ProductController {
         log.info("Hitting createProduct API");
         return new ResponseEntity<>(productService.createProduct(productRequest),
                 HttpStatus.CREATED);
+    }
+
+    @GetMapping("/simulate")
+    public ResponseEntity<String> simulateFailure(@RequestParam(defaultValue = "false") boolean isFailure) {
+        if(isFailure){
+            throw  new RuntimeException("Simulate failure for Testing");
+        }
+        return ResponseEntity.ok("Product service is Up & Ok");
+    }
+
+    @GetMapping("/message")
+    @RateLimiter(name = "productServiceRateLimiter", fallbackMethod = "rateLimitingFallBack")
+    public String testRateLimitingAPI() {
+        return "Beep Beep from Product service";
+    }
+
+    public String rateLimitingFallBack(Exception e) {
+        log.error(e.getMessage());
+        return "Product service DOS attack";
     }
 
     @GetMapping
