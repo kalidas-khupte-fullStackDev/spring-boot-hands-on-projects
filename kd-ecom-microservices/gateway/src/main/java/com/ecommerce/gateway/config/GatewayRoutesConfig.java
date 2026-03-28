@@ -27,23 +27,14 @@ public class GatewayRoutesConfig {
 
     @Bean
     public RouteLocator customRoutesLocator(RouteLocatorBuilder builder) {
-        return builder.routes()
-                .route("user-service", r -> r
+        return builder.routes().route("user-service", r -> r
                         // Capture everything after /users/ into a variable called 'segment'
-                        .path("/api/users", "/api/users/**")
-                        .filters(gatewayFilterSpec -> gatewayFilterSpec.circuitBreaker(config ->
-                                config.setName("commonCircuitBreakerService").setFallbackUri("forward:/fallback/users")))
+                        .path("/api/users", "/api/users/**").filters(gatewayFilterSpec -> gatewayFilterSpec.requestRateLimiter(c -> c.setRateLimiter(redisRateLimiter()).setKeyResolver(hostnameResolver())).retry(retryConfig -> retryConfig.setMethods(HttpMethod.GET).setRetries(5)).circuitBreaker(config -> config.setName("commonCircuitBreakerService").setFallbackUri("forward:/fallback/users")))
                         // Plop that captured segment onto the end of the new path
 //                        .filters(f -> f.rewritePath("/users(?<segment>/?.*)", "/api/users${segment}"))
-                        .uri("lb://user-service"))
-                .route("product-service", r -> r
+                        .uri("lb://user-service")).route("product-service", r -> r
                         // Capture everything after /users/ into a variable called 'segment'
-                        .path("/api/products", "/api/products/**")
-                        .filters(gatewayFilterSpec -> gatewayFilterSpec.requestRateLimiter(c ->
-                                        c.setRateLimiter(redisRateLimiter()).setKeyResolver(hostnameResolver()))
-                                .retry(retryConfig -> retryConfig.setMethods(HttpMethod.GET).setRetries(5))
-                                .circuitBreaker(config ->
-                                        config.setName("commonCircuitBreakerService").setFallbackUri("forward:/fallback/products")))
+                        .path("/api/products", "/api/products/**").filters(gatewayFilterSpec -> gatewayFilterSpec.requestRateLimiter(c -> c.setRateLimiter(redisRateLimiter()).setKeyResolver(hostnameResolver())).retry(retryConfig -> retryConfig.setMethods(HttpMethod.GET).setRetries(5)).circuitBreaker(config -> config.setName("commonCircuitBreakerService").setFallbackUri("forward:/fallback/products")))
                         // Plop that captured segment onto the end of the new path
 //                        .filters(f -> f.rewritePath("/products(?<segment>/?.*)", "/api/products${segment}"))
                         .uri("lb://product-service"))
@@ -56,32 +47,22 @@ public class GatewayRoutesConfig {
 //                        .uri("lb://order-service"))
                 .route("order-service-carts", r -> r
                         // Capture 'orders' or 'carts' into {prefix}, and the rest into {segment}
-                        .path("/api/cart", "/api/cart/**")
-                        .filters(gatewayFilterSpec -> gatewayFilterSpec.circuitBreaker(config ->
-                                config.setName("commonCircuitBreakerService").setFallbackUri("forward:/fallback/carts")))
+                        .path("/api/cart", "/api/cart/**").filters(gatewayFilterSpec -> gatewayFilterSpec.requestRateLimiter(c -> c.setRateLimiter(redisRateLimiter()).setKeyResolver(hostnameResolver())).retry(retryConfig -> retryConfig.setMethods(HttpMethod.GET).setRetries(5)).circuitBreaker(config -> config.setName("commonCircuitBreakerService").setFallbackUri("forward:/fallback/carts")))
                         // Rebuild the path using both variables
 //                        .filters(f -> f.rewritePath("/cart(?<segment>/?.*)",
 //                                "/api/cart${segment}"))
-                        .uri("lb://order-service"))
-                .route("order-service-main", r -> r
+                        .uri("lb://order-service")).route("order-service-main", r -> r
                         // Capture 'orders' or 'carts' into {prefix}, and the rest into {segment}
-                        .path("/api/orders", "/api/orders/**")
-                        .filters(gatewayFilterSpec -> gatewayFilterSpec.circuitBreaker(config ->
-                                config.setName("commonCircuitBreakerService").setFallbackUri("forward:/fallback/orders")))
+                        .path("/api/orders", "/api/orders/**").filters(gatewayFilterSpec -> gatewayFilterSpec.requestRateLimiter(c -> c.setRateLimiter(redisRateLimiter()).setKeyResolver(hostnameResolver())).retry(retryConfig -> retryConfig.setMethods(HttpMethod.GET).setRetries(5)).circuitBreaker(config -> config.setName("commonCircuitBreakerService").setFallbackUri("forward:/fallback/orders")))
                         // Rebuild the path using both variables
 //                        .filters(f -> f.rewritePath("/orders(?<segment>/?.*)",
 //                                "/api/orders${segment}"))
-                        .uri("lb://order-service"))
-                .route("eureka-registry-service", r -> r
+                        .uri("lb://order-service")).route("eureka-registry-service", r -> r
                         // Capture everything after /users/ into a variable called 'segment'
                         .path("/eureka/main")
                         // Plop that captured segment onto the end of the new path
-                        .filters(f -> f.setPath("/"))
-                        .uri("http://localhost:8761"))
-                .route("eureka-registry-service-statice", r -> r
+                        .filters(f -> f.setPath("/")).uri("http://localhost:8761")).route("eureka-registry-service-statice", r -> r
                         // Capture everything after /users/ into a variable called 'segment'
-                        .path("/eureka/**")
-                        .uri("http://localhost:8761"))
-                .build();
+                        .path("/eureka/**").uri("http://localhost:8761")).build();
     }
 }

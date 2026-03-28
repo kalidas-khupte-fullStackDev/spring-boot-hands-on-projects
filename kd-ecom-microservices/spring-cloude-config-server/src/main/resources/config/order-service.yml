@@ -23,6 +23,17 @@ spring:
 #    password: ${RABBITMQ_PASSWORD:guest}
 #    virtual-host: ${RABBITMQ_VHOST:guest}
 #    connection-timeout: 30000
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    exchange:
+      name: order.exchange
+    queue:
+      name: order.queue
+    routing:
+      key: order.tracking
 
 
 server:
@@ -61,7 +72,7 @@ resilience4j:
       orderServiceRateLimiter:
         timeout-duration: 0s
         limit-refresh-period: 4s
-        limit-for-period: 2s
+        limit-for-period: 2
   retry:
     instances:
       retryBreaker:
