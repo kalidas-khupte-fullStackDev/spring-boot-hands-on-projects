@@ -2,16 +2,29 @@ spring:
   application:
     name: notification
   rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
+    host: ${RABBITMQ_HOST_URL:localhost}
+    port: ${RABBITMQ_HOST_PORT:5672}
+    username: ${RABBITMQ_HOST_USERNAME:guest}
+    password: ${RABBITMQ_HOST_PASSWORD:guest}
+    virtual-host: ${RABBITMQ_VHOST:guest}
+    connection-timeout: 30000
     exchange:
       name: order.exchange
     queue:
       name: order.queue
     routing:
       key: order.tracking
+#  rabbitmq:
+#    host: localhost
+#    port: 5672
+#    username: guest
+#    password: guest
+#    exchange:
+#      name: order.exchange
+#    queue:
+#      name: order.queue
+#    routing:
+#      key: order.tracking
 
 server:
   port: 8084

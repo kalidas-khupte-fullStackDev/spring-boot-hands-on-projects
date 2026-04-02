@@ -29,24 +29,24 @@ services:
       - postgres
     restart: unless-stopped
 
-  rabbitmq:
-    container_name: rabbitmq
-    image: rabbitmq:4.2.5-management-alpine
-    environment:
-      - RABBITMQ_DEFAULT_USER=guest
-      - RABBITMQ_DEFAULT_PASS=guest
-    ports:
-      - "5672:5672"   # RabbitMQ Message Broker
-      - "15672:15672" # RabbitMQ Management UI (http://localhost:15672)
-    networks:
-      - postgres
-    restart: unless-stopped
-    # Optional: Health check ensures other services don't connect too early
-    healthcheck:
-      test: [ "CMD", "rabbitmq-diagnostics", "check_port_connectivity" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+#  rabbitmq:
+#    container_name: rabbitmq
+#    image: rabbitmq:4.2.5-management-alpine
+#    environment:
+#      - RABBITMQ_DEFAULT_USER=guest
+#      - RABBITMQ_DEFAULT_PASS=guest
+#    ports:
+#      - "5672:5672"   # RabbitMQ Message Broker
+#      - "15672:15672" # RabbitMQ Management UI (http://localhost:15672)
+#    networks:
+#      - postgres
+#    restart: unless-stopped
+#    # Optional: Health check ensures other services don't connect too early
+#    healthcheck:
+#      test: [ "CMD", "rabbitmq-diagnostics", "check_port_connectivity" ]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
 
 #  eureka-server:
 #    build: ./eureka-service-registry
