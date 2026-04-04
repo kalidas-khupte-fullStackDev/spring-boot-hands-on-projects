@@ -6,8 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
-//@NoArgsConstructor
+@NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class RiderLocation {
     private String riderId;
     private double longitude;

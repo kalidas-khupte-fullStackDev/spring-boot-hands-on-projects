@@ -4,6 +4,11 @@ import com.consumer.service.dto.RiderLocation;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+
 @Service
 public class OrderPlacedConsumer {
 

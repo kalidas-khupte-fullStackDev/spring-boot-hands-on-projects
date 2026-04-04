@@ -11,4 +11,5 @@ public class TopicConfiguration {
     public NewTopic creNewTopic(){
         return new NewTopic("new-topic", 3 , (short) 1);
     }
+
 }
