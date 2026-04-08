@@ -10,7 +10,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class RiderLocation {
-    private Integer riderId;
+    private String riderId;
     private Double longitude;
     private Double latitude;
 }

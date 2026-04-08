@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 public class RiderLocation {
     private String riderId;
-    private double longitude;
-    private double latitude;
+    private Double longitude;
+    private Double latitude;
 }
 

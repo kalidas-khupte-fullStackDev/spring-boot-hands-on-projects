@@ -3,50 +3,30 @@ spring:
     name: consumer
   cloud:
     function:
-      definition: getRiderLocation
+      definition: receiveRiderLocation
     stream:
-      function:
-        definition: getRiderLocation
       bindings:
-        getRiderLocation-in-0:
+        receiveRiderLocation-in-0:
           destination: rider-location-topic
-          content-type: application/json        # ✅ tells SCS to convert JSON → object
-          consumer:
-            max-attempts: 1
+          group: rider-group-v5 # Changed group to skip old "bad" data
+          content-type: application/json
       kafka:
         binder:
           brokers: localhost:9092
           configuration:
+            # Force the consumer to use the local class regardless of what
+            # package name the producer sent in the headers
+            spring.json.use.type.headers: false
+            spring.json.value.default.type: com.example.model.RiderLocation
+            spring.json.trusted.packages: "*"
+            # We use ByteArray because Spring Cloud Stream's MessageConverter
+            # takes the bytes and does the JSON mapping itself.
             key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
             value.deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
-#  kafka:
-#    bootstrap-servers: localhost:9092
-#    consumer:
-#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-#      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
-#      properties:
-#        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
-#        spring.json.trusted.packages: "*"
-#        spring.json.value.default.type: com.consumer.service.dto.RiderLocation
-#
 
-#spring:
-#  application:
-#    name: consumer
-#  cloud:
-#    function:
-#      definition: getRiderLocation
-#    stream:
-#      function:
-#        definition: getRiderLocation
-#      bindings:
-#        getRiderLocation-in-0:
-#          destination: rider-location-topic
-#          consumer:
-#            max-attempts: 1
-#      kafka:
-#        binder:
-#          brokers: localhost:9092
+# Essential to avoid "Header" type mismatches
+# (Where producer says it's a String, but consumer wants RiderLocation)
+spring.cloud.stream.override-cloud-connectors: true
+
 server:
-  port: 8081
-
+  port: 8082
