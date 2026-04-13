@@ -14,7 +14,22 @@ public class OrderPlacedConsumerStreams {
     @Bean
     public Consumer<RiderLocation> receiveRiderLocation() {
         return riderLocation -> {
-            System.out.println("Received location: " + riderLocation.getLatitude());
+            System.out.println("------------------------------------");
+            System.out.println("Successfully Received Rider Location !");
+            System.out.println("Rider ID: " + riderLocation.getRiderId());
+            System.out.println("Latitude: " + riderLocation.getLatitude());
+            System.out.println("Longitude: " + riderLocation.getLongitude());
+            System.out.println("------------------------------------");
+        };
+    }
+
+    @Bean
+    public Consumer<String> receiveRiderDeliveryStatus() {
+        return status -> {
+            System.out.println("------------------------------------");
+            System.out.println("Successfully Received Rider Status !");
+            System.out.println("Rider Status: " + status);
+            System.out.println("------------------------------------");
         };
     }
 

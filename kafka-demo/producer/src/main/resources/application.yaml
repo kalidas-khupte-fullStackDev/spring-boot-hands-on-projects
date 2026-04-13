@@ -1,15 +1,26 @@
 spring:
+  integration:
+    poller:
+      fixed-delay: 1000
   application:
     name: producer
   cloud:
     function:
-      definition: sendRiderLocation
+      definition: sendRiderLocation;sendRiderDeliveryStatus
     stream:
+      function:
+        definition: sendRiderLocation;sendRiderDeliveryStatus
       bindings:
         sendRiderLocation-out-0:
-          destination: rider-location-topic
+#          destination: rider-location-topic
+          destination: new-topic
           # This ensures the object is converted to JSON bytes
           content-type: application/json
+        sendRiderDeliveryStatus-out-0:
+#          destination: rider-location-topic
+          destination:  order-placed
+          # This ensures the object is converted to JSON bytes
+          content-type: text/plain
       kafka:
         binder:
           brokers: localhost:9092

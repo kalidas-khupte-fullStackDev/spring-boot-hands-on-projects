@@ -3,13 +3,21 @@ spring:
     name: consumer
   cloud:
     function:
-      definition: receiveRiderLocation
+      definition: receiveRiderLocation;receiveRiderDeliveryStatus
     stream:
+      function:
+        definition: receiveRiderLocation;receiveRiderDeliveryStatus
       bindings:
         receiveRiderLocation-in-0:
-          destination: rider-location-topic
+#          destination: rider-location-topic
+          destination: new-topic
           group: rider-group-v5 # Changed group to skip old "bad" data
           content-type: application/json
+        receiveRiderDeliveryStatus-in-0:
+#          destination: rider-location-topic
+          destination: order-placed
+          group: rider-group-status # Changed group to skip old "bad" data
+          content-type: text/plain
       kafka:
         binder:
           brokers: localhost:9092
