@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 //@RefreshScope
-public class RabbitMQConfiguration {
+public class    RabbitMQConfiguration {
 
     @Value("${spring.rabbitmq.queue.name}")
     private String queueName;

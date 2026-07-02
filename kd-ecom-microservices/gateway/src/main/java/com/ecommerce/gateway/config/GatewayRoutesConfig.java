@@ -17,7 +17,8 @@ public class GatewayRoutesConfig {
 
     @Bean
     public RedisRateLimiter redisRateLimiter() {
-        return new RedisRateLimiter(20, 30, 1);
+        return new
+                RedisRateLimiter(20, 30, 1);
     }
 
     @Bean
@@ -29,7 +30,9 @@ public class GatewayRoutesConfig {
     public RouteLocator customRoutesLocator(RouteLocatorBuilder builder) {
         return builder.routes().route("user-service", r -> r
                         // Capture everything after /users/ into a variable called 'segment'
-                        .path("/api/users", "/api/users/**").filters(gatewayFilterSpec -> gatewayFilterSpec.requestRateLimiter(c -> c.setRateLimiter(redisRateLimiter()).setKeyResolver(hostnameResolver())).retry(retryConfig -> retryConfig.setMethods(HttpMethod.GET).setRetries(5)).circuitBreaker(config -> config.setName("commonCircuitBreakerService").setFallbackUri("forward:/fallback/users")))
+                        .path("/api/users", "/api/users/**")
+                        .filters(gatewayFilterSpec -> gatewayFilterSpec.requestRateLimiter(c -> c.setRateLimiter(redisRateLimiter())
+                        .setKeyResolver(hostnameResolver())).retry(retryConfig -> retryConfig.setMethods(HttpMethod.GET).setRetries(5)).circuitBreaker(config -> config.setName("commonCircuitBreakerService").setFallbackUri("forward:/fallback/users")))
                         // Plop that captured segment onto the end of the new path
 //                        .filters(f -> f.rewritePath("/users(?<segment>/?.*)", "/api/users${segment}"))
                         .uri("lb://user-service")).route("product-service", r -> r
