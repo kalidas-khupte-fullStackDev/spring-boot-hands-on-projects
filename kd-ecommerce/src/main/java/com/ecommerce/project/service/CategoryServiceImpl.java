@@ -38,9 +38,7 @@ public class CategoryServiceImpl implements CategoryService {
             throw new APIException("No categories present till now");
         }
         // DTO logic
-        List<CategoryDTO> categoryDTOList = categories.stream().map(categoryObj -> {
-            return modelMapper.map(categoryObj, CategoryDTO.class);
-        }).toList();
+        List<CategoryDTO> categoryDTOList = categories.stream().map(categoryObj -> modelMapper.map(categoryObj, CategoryDTO.class)).toList();
         CategoryResponse categoryResponse = new CategoryResponse();
         categoryResponse.setContent(categoryDTOList);
         categoryResponse.setPageNumber(pageable.getPageNumber());

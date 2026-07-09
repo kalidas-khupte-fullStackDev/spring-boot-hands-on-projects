@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,30 +19,40 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<UserResponse>> getAllUsers(){
+    public ResponseEntity<List<UserResponse>> getAllUsers() {
         return new ResponseEntity<>(userService.fetchAllUsers(),
-                                    HttpStatus.OK);
+                HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> getUser(@PathVariable String id){
+    public ResponseEntity<UserResponse> getUser(@PathVariable String id) {
         return userService.fetchUser(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<String> createUser(@RequestBody UserRequest userRequest){
+    public ResponseEntity<String> createUser(@RequestBody UserRequest userRequest) {
         userService.addUser(userRequest);
         return ResponseEntity.ok("User added successfully");
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<String> updateUser(@PathVariable String id,
-                                             @RequestBody UserRequest updateUserRequest){
+                                             @RequestBody UserRequest updateUserRequest) {
         boolean updated = userService.updateUser(id, updateUserRequest);
         if (updated)
             return ResponseEntity.ok("User updated successfully");
         return ResponseEntity.notFound().build();
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<String> updateUserViaPatch(@PathVariable String id,
+                                                     @RequestBody Map<String, Object> updateUserPatchRequest) {
+        boolean updated = userService.updateUserViaPatch(id, updateUserPatchRequest);
+        if (updated)
+            return ResponseEntity.ok("User updated successfully via Patch Request");
+        return ResponseEntity.notFound().build();
+    }
+
 }

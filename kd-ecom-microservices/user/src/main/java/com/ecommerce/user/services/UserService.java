@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -45,6 +46,18 @@ public class UserService {
                     userRepository.save(existingUser);
                     return true;
                 }).orElse(false);
+    }
+
+    public boolean updateUserViaPatch(String id, Map<String, Object> updatedUserRequest) {
+        User existingUser = userRepository.findById(id).orElse(null);
+        if(existingUser == null){
+            return false;
+        }
+        if(updatedUserRequest.containsKey("firstName")){
+            existingUser.setFirstName(updatedUserRequest.get("firstName").toString());
+        }
+        userRepository.save(existingUser);
+        return true;
     }
 
     private void updateUserFromRequest(User user, UserRequest userRequest) {

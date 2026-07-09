@@ -6,7 +6,7 @@ spring:
     name: producer
   cloud:
     function:
-      definition: sendRiderLocation;sendRiderDeliveryStatus
+      definition: sendRiderLocation;sendRiderDeliveryStatus;uppercase
     stream:
       function:
         definition: sendRiderLocation;sendRiderDeliveryStatus
